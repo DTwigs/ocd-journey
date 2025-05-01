@@ -13,6 +13,7 @@ import Animated, {
   withTiming,
   withSequence,
   Easing,
+  SVGAdapter,
 } from "react-native-reanimated";
 
 import { throttle } from "@/utils/throttle";
@@ -47,10 +48,14 @@ export default function HomeScreen() {
     CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50
   );
 
-  const animatedProps = useAnimatedProps(() => ({
-    r: circleProps.value.r,
-    strokeWidth: circleProps.value.stroke,
-  }));
+  const animatedProps = useAnimatedProps(
+    () => ({
+      r: circleProps.value.r,
+      strokeWidth: circleProps.value.stroke,
+    }),
+    null,
+    SVGAdapter
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -62,6 +67,12 @@ export default function HomeScreen() {
             color={Colors[colorScheme].text}
           />
         </Pressable>
+        <ThemedText style={{ color: Colors[colorScheme].lightText }}>
+          Press every time you resist a compulsion!
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={[styles.contents]}>
+        <ThemedText>Hi I am a guy</ThemedText>
       </ThemedView>
       <Svg
         height="200%"
@@ -69,19 +80,11 @@ export default function HomeScreen() {
         viewBox="0 0 100 100"
         style={{ position: "absolute", top: "-74%", elevation: 0, zIndex: 0 }}
       >
-        {/* <Circle
-          cx="50"
-          cy="50"
-          stroke={Colors[colorScheme].text}
-          fill={Colors[colorScheme].background}
-          r={120}
-          strokeWidth={10}
-        /> */}
         <AnimatedCircle
           cx="50"
           cy="50"
           stroke={Colors[colorScheme].text}
-          fill={Colors[colorScheme].background}
+          fill={"transparent"} //Colors[colorScheme].background}
           animatedProps={animatedProps}
         />
       </Svg>

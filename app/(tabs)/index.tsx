@@ -1,74 +1,103 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Platform,
+} from "react-native";
+import Svg, { Circle } from "react-native-svg";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Animated, {
+  useSharedValue,
+  useAnimatedProps,
+  withTiming,
+  withSequence,
+  Easing,
+} from "react-native-reanimated";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { throttle } from "@/utils/throttle";
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { AnimatedCircle } from "@/components/AnimatedCircle";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+
+const CIRCLE_ANIM_STEP_1 = 700;
+const CIRCLE_ANIM_STEP_2 = 500;
+const CIRCLE_ANIM_STEP_3 = 0;
 
 export default function HomeScreen() {
+  const colorScheme = useColorScheme();
+  const circleProps = useSharedValue<number>({ r: 10, stroke: 2 });
+
+  const animateOnPress = () => {
+    circleProps.value = withSequence(
+      withTiming(
+        { stroke: 300, r: 160 },
+        { duration: CIRCLE_ANIM_STEP_1, easing: Easing.inOut(Easing.quad) }
+      ),
+      withTiming({ stroke: 10, r: 300 }, { duration: CIRCLE_ANIM_STEP_2 }),
+      withTiming({ stroke: 2, r: 10 }, { duration: CIRCLE_ANIM_STEP_3 })
+    );
+  };
+
+  const handlePress = throttle(
+    animateOnPress,
+    CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50
+  );
+
+  const animatedProps = useAnimatedProps(() => ({
+    r: circleProps.value.r,
+    strokeWidth: circleProps.value.stroke,
+  }));
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <ScrollView contentContainerStyle={styles.container}>
+      <ThemedView style={styles.contents}>
+        <Pressable onPress={handlePress} style={{ elevation: 1, zIndex: 1 }}>
+          <MaterialCommunityIcons
+            size={128}
+            name="arrow-up-bold-circle"
+            color={Colors[colorScheme].text}
+          />
+        </Pressable>
+      </ThemedView>
+      <Svg
+        height="200%"
+        width="100%"
+        viewBox="0 0 100 100"
+        style={{ position: "absolute", top: "-74%", elevation: 0, zIndex: 0 }}
+      >
+        {/* <Circle
+          cx="50"
+          cy="50"
+          stroke={Colors[colorScheme].text}
+          fill={Colors[colorScheme].background}
+          r={120}
+          strokeWidth={10}
+        /> */}
+        <AnimatedCircle
+          cx="50"
+          cy="50"
+          stroke={Colors[colorScheme].text}
+          fill={Colors[colorScheme].background}
+          animatedProps={animatedProps}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </Svg>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  contents: {
+    flex: 1,
+    flexGrow: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: "33%",
   },
 });

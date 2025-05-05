@@ -1,14 +1,7 @@
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Platform,
-  View,
-} from "react-native";
-import Svg, { Circle } from "react-native-svg";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import Svg from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Animated, {
+import {
   useSharedValue,
   useAnimatedProps,
   withTiming,
@@ -18,9 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { throttle } from "@/utils/throttle";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { AnimatedCircle } from "@/components/AnimatedCircle";
 import CompulsionChart from "@/components/CompulsionChart";
 import { Colors } from "@/constants/Colors";
@@ -38,16 +29,16 @@ export default function HomeScreen() {
     circleProps.value = withSequence(
       withTiming(
         { stroke: 300, r: 160 },
-        { duration: CIRCLE_ANIM_STEP_1, easing: Easing.inOut(Easing.quad) }
+        { duration: CIRCLE_ANIM_STEP_1, easing: Easing.inOut(Easing.quad) },
       ),
       withTiming({ stroke: 10, r: 300 }, { duration: CIRCLE_ANIM_STEP_2 }),
-      withTiming({ stroke: 2, r: 10 }, { duration: CIRCLE_ANIM_STEP_3 })
+      withTiming({ stroke: 2, r: 10 }, { duration: CIRCLE_ANIM_STEP_3 }),
     );
   };
 
   const handlePress = throttle(
     animateOnPress,
-    CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50
+    CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50,
   );
 
   const animatedProps = useAnimatedProps(
@@ -56,7 +47,7 @@ export default function HomeScreen() {
       strokeWidth: circleProps.value.stroke,
     }),
     null,
-    SVGAdapter
+    SVGAdapter,
   );
 
   return (
@@ -91,7 +82,7 @@ export default function HomeScreen() {
           cx="50"
           cy="50"
           stroke={Colors[colorScheme].tertiary}
-          fill={"transparent"} //Colors[colorScheme].background}
+          fill="transparent"
           animatedProps={animatedProps}
         />
       </Svg>

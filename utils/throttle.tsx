@@ -1,4 +1,4 @@
-export function throttle(func: (any) => any, wait: number): () => void {
+export function throttle(func: (any) => void, wait: number): (any) => void {
   // 'private' variable for instance
   // The returned function will be able to reference this due to closure.
   // Each call to the returned function will share this common boolean.
@@ -6,17 +6,17 @@ export function throttle(func: (any) => any, wait: number): () => void {
   let timeout = null;
 
   // Calling throttle returns a new anonymous function
-  return function () {
+  return function (...args) {
     // reference the context and args for the setTimeout function
-    var context = this,
-      args = arguments;
 
     if (!blocked) {
       blocked = true;
-      func.apply(context, args);
+      func.apply(this, args);
     }
 
-    if (timeout) return;
+    if (timeout) {
+      return;
+    }
 
     timeout = setTimeout(function () {
       timeout = null;

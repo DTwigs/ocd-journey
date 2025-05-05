@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   Platform,
+  View,
 } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { AnimatedCircle } from "@/components/AnimatedCircle";
+import CompulsionChart from "@/components/CompulsionChart";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -58,9 +60,14 @@ export default function HomeScreen() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <ThemedView style={styles.contents}>
-        <Pressable onPress={handlePress} style={{ elevation: 1, zIndex: 1 }}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme].background },
+      ]}
+    >
+      <View style={styles.contents}>
+        <Pressable onPress={handlePress}>
           <MaterialCommunityIcons
             size={128}
             name="arrow-up-bold-circle"
@@ -70,10 +77,10 @@ export default function HomeScreen() {
         <ThemedText style={{ color: Colors[colorScheme].lightText }}>
           Press every time you resist a compulsion!
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={[styles.contents]}>
-        <ThemedText>Hi I am a guy</ThemedText>
-      </ThemedView>
+      </View>
+      <View style={[styles.chart]}>
+        <CompulsionChart />
+      </View>
       <Svg
         height="200%"
         width="100%"
@@ -83,7 +90,7 @@ export default function HomeScreen() {
         <AnimatedCircle
           cx="50"
           cy="50"
-          stroke={Colors[colorScheme].text}
+          stroke={Colors[colorScheme].tertiary}
           fill={"transparent"} //Colors[colorScheme].background}
           animatedProps={animatedProps}
         />
@@ -95,12 +102,19 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-around",
   },
   contents: {
-    flex: 1,
-    flexGrow: 1,
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: "33%",
+    elevation: 1,
+    zIndex: 1,
+  },
+  chart: {
+    flexDirection: "column",
+    alignItems: "center",
+    elevation: 1,
+    zIndex: 1,
   },
 });

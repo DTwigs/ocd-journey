@@ -6,22 +6,21 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 export function ChartColumn({ count }: { count: number }) {
   const colorScheme = useColorScheme();
 
-  const buildBlocks = () => {
-    const countedArray = new Array(count).fill(1);
-    const blocks = countedArray.map((_, i) => (
-      <View
-        key={i}
-        style={[
-          styles.countItem,
-          { backgroundColor: Colors[colorScheme].text },
-        ]}
-      ></View>
-    ));
+  const countedArray = new Array(count).fill(1);
 
-    return blocks;
-  };
-
-  return <View style={styles.contents}>{buildBlocks()}</View>;
+  return (
+    <View style={styles.contents}>
+      {countedArray.map((_, i) => (
+        <View
+          key={i}
+          style={[
+            styles.countItem,
+            { backgroundColor: Colors[colorScheme].text },
+          ]}
+        ></View>
+      ))}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

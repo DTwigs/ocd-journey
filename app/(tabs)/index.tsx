@@ -13,7 +13,7 @@ import {
 import { throttle } from "@/utils/throttle";
 import { ThemedText } from "@/components/ThemedText";
 import { AnimatedCircle } from "@/components/AnimatedCircle";
-import CompulsionChart from "@/components/CompulsionChart";
+import ResistChart from "@/components/ResistChart";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -70,7 +70,7 @@ export default function HomeScreen() {
         </ThemedText>
       </View>
       <View style={[styles.chart]}>
-        <CompulsionChart />
+        <ResistChart />
       </View>
       <Svg
         height="200%"

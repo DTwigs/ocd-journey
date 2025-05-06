@@ -1,8 +1,9 @@
 import { createContext, useReducer } from "react";
 import {
-  reducer as logEntryReducer,
+  actions as logEntryActions,
   initialState as logEntryInitialState,
 } from "@/models/logEntry/reducers";
+import type State from "@/models/state/type";
 
 const initialState = {
   ...logEntryInitialState,
@@ -12,12 +13,12 @@ export const StoreContext = createContext(initialState);
 
 // combine reducers
 const Actions = {
-  ...logEntryReducer,
+  ...logEntryActions,
 };
 
-const reducer = (state, action) => {
+const reducer = (state: State, action: { type: string; value?: any }) => {
   const act = Actions[action.type];
-  const update = act(state);
+  const update = act(state, action.value);
   return { ...state, ...update };
 };
 

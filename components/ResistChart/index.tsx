@@ -24,14 +24,8 @@ import type { LogEntry } from "@/models/logEntry/type";
 // };
 
 export default function ResistChart() {
-  const store = useStore();
-  console.log({ store });
+  const { logEntries } = useStore();
   const colorScheme = useColorScheme();
-  // const [data, setData] = useState<LogEntry[]>([]);
-
-  // useEffect(() => {
-  //   setData(createData());
-  // }, []);
 
   return (
     <Pressable onPress={() => {}}>
@@ -41,7 +35,7 @@ export default function ResistChart() {
           { borderBottomColor: Colors[colorScheme].text },
         ]}
       >
-        {[...store.logEntries.slice(0, 20)].map((logEntry: LogEntry) => (
+        {[...logEntries.slice(0, 20)].map((logEntry: LogEntry) => (
           <ChartColumn count={logEntry.entry.resists} key={logEntry.date} />
         ))}
       </View>

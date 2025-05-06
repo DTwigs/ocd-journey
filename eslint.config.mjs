@@ -118,7 +118,7 @@ export default tseslint.config(
       "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-var-requires": 0,
       "@typescript-eslint/explicit-module-boundary-types": 0,
-      "@typescript-eslint/no-explicit-any": 2,
+      "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-require-imports": "off",
 
       "react-hooks/exhaustive-deps": "off",

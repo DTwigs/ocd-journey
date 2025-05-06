@@ -20,17 +20,31 @@ export const findTodaysEntry = (entries: LogEntry[]): LogEntry => {
 
 export const addResistToTodaysEntry = (entries: LogEntry[]): LogEntry[] => {
   const today = new Date();
+  let hasTodaysEntry = false;
 
-  return entries.map((entry) => {
-    if (isSameDay(today, entry.date)) {
+  const newEntries = entries.map((log) => {
+    if (isSameDay(today, log.date)) {
+      hasTodaysEntry = true;
       return {
-        ...entry,
+        ...log,
         entry: {
-          ...entry.entry,
-          resists: entry.resists + 1,
+          ...log.entry,
+          resists: log.entry.resists + 1,
         },
       };
     }
     return entry;
   });
+
+  // Adds an entry for todays date if one doesnt already exist.
+  if (!hasTodaysEntry) {
+    newEntries.push({
+      date: formatISO(new Date()),
+      entry: {
+        resists: 1,
+      },
+    });
+  }
+
+  return newEntries;
 };

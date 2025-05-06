@@ -16,12 +16,15 @@ import { AnimatedCircle } from "@/components/AnimatedCircle";
 import ResistChart from "@/components/ResistChart";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useStore } from "@/hooks/useStore";
+import { logEntryModel } from "@/models/logEntry";
 
 const CIRCLE_ANIM_STEP_1 = 700;
 const CIRCLE_ANIM_STEP_2 = 500;
 const CIRCLE_ANIM_STEP_3 = 0;
 
 export default function HomeScreen() {
+  const { dispatch } = useStore();
   const colorScheme = useColorScheme();
   const circleProps = useSharedValue<number>({ r: 10, stroke: 2 });
 
@@ -37,7 +40,10 @@ export default function HomeScreen() {
   };
 
   const handlePress = throttle(
-    animateOnPress,
+    () => {
+      dispatch({ type: logEntryModel.ADD_RESIST });
+      animateOnPress();
+    },
     CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50,
   );
 

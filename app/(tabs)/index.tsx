@@ -1,12 +1,12 @@
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import Svg from "react-native-svg";
+import { useCallback } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   useSharedValue,
   useAnimatedProps,
   withTiming,
   withSequence,
-  Easing,
   SVGAdapter,
 } from "react-native-reanimated";
 
@@ -30,21 +30,21 @@ export default function HomeScreen() {
 
   const animateOnPress = () => {
     circleProps.value = withSequence(
-      withTiming(
-        { stroke: 300, r: 160 },
-        { duration: CIRCLE_ANIM_STEP_1, easing: Easing.inOut(Easing.quad) },
-      ),
+      withTiming({ stroke: 300, r: 160 }, { duration: CIRCLE_ANIM_STEP_1 }),
       withTiming({ stroke: 10, r: 300 }, { duration: CIRCLE_ANIM_STEP_2 }),
       withTiming({ stroke: 2, r: 10 }, { duration: CIRCLE_ANIM_STEP_3 }),
     );
   };
 
-  const handlePress = throttle(
-    () => {
-      dispatch({ type: logEntryModel.ADD_RESIST });
-      animateOnPress();
-    },
-    CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 50,
+  const handlePress = useCallback(
+    throttle(
+      () => {
+        dispatch({ type: logEntryModel.ADD_RESIST });
+        animateOnPress();
+      },
+      CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 100,
+    ),
+    [throttle],
   );
 
   const animatedProps = useAnimatedProps(

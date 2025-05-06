@@ -1,50 +1,63 @@
-import { isSameDay, formatISO } from "date-fns";
+import {
+  differenceInCalendarDays,
+  isSameDay,
+  startOfDay,
+  subDays,
+} from "date-fns";
+import { make } from "./creation";
 import type LogEntry from "./type";
 
-export const findTodaysEntry = (entries: LogEntry[]): LogEntry => {
-  const today = new Date();
+export const hasTodaysLog = (entries: LogEntry[]): boolean =>
+  entries.length > 0
+    ? isSameDay(new Date(), getLastEntry(entries).date)
+    : false;
 
-  const todaysEntry = entries.find((entry) => isSameDay(today, entry.date));
+export const getTodaysLog = (entries: LogEntry[]): LogEntry =>
+  hasTodaysLog(entries)
+    ? entries[0]
+    : { date: startOfDay(new Date()).toISOString(), entry: { resists: 0 } };
 
-  if (!todaysEntry) {
-    return {
-      date: formatISO(new Date()),
-      entry: {
+export const getLastEntry = (entries: LogEntryp[]): LogEntry =>
+  entries[entries.length - 1];
+
+export const addResistToTodaysLog = (entries: LogEntry[]): LogEntry[] => {
+  let updatedEntries = [...entries];
+  if (hasTodaysLog(updatedEntries)) {
+    getLastEntry(updatedEntries).stats.resists += 1;
+  } else {
+    updatedEntries = fillMissingLogs(updatedEntries);
+    updatedEntries.push(
+      make(startOfDay(new Date()).toISOString(), {
         resists: 1,
-      },
-    };
+      }),
+    );
   }
 
-  return todaysEntry;
+  return updatedEntries;
 };
 
-export const addResistToTodaysEntry = (entries: LogEntry[]): LogEntry[] => {
-  const today = new Date();
-  let hasTodaysEntry = false;
+// If the user hasnt been in the app in a while there will be blank days
+// that needed to be added in to the array of LogEntries
+export const fillMissingLogs = (entries: LogEntry[]): LogEntry[] => {
+  const filledEntries = [...entries];
+  const lastEntry: LogEntry = getLastEntry(filledEntries);
+  const logGapCount: number = differenceInCalendarDays(
+    new Date(),
+    lastEntry.date,
+  );
+  const toFill: number = logGapCount - 1;
 
-  const newEntries = entries.map((log) => {
-    if (isSameDay(today, log.date)) {
-      hasTodaysEntry = true;
-      return {
-        ...log,
-        entry: {
-          ...log.entry,
-          resists: log.entry.resists + 1,
-        },
-      };
-    }
-    return entry;
-  });
-
-  // Adds an entry for todays date if one doesnt already exist.
-  if (!hasTodaysEntry) {
-    newEntries.push({
-      date: formatISO(new Date()),
-      entry: {
-        resists: 1,
-      },
-    });
+  if (toFill <= 0) {
+    return filledEntries;
   }
 
-  return newEntries;
+  for (let i = toFill; i > 0; i--) {
+    filledEntries.push(
+      make(startOfDay(subDays(new Date(), i)).toISOString(), {
+        resists: 0,
+      }),
+    );
+  }
+
+  return filledEntries;
 };

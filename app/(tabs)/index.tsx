@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   chart: {
+    width: "100%",
     flexDirection: "column",
     alignItems: "center",
     elevation: 1,

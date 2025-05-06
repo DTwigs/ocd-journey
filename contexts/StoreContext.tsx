@@ -16,7 +16,9 @@ const Actions = {
   ...logEntryActions,
 };
 
-const reducer = (state: State, action: { type: string; value?: any }) => {
+type Action = { type: string } | { type: string; value: string };
+
+const reducer = (state: State, action: Action) => {
   const act = Actions[action.type];
   const update = act(state, action.value);
   return { ...state, ...update };

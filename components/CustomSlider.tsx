@@ -24,7 +24,17 @@ import React from "react";
 import { StyleSheet, View, PanResponder, Animated, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function CustomSlider({
+type CustomSliderProps = {
+  name?: string;
+  icon?: string;
+  minBoundary?: number;
+  maxBoundary?: number;
+  initVal?: number;
+  colorHighlight?: string;
+  setValue?: (value: number) => void;
+};
+
+export const CustomSlider = ({
   name = "Price",
   icon = "ticket-percent-outline",
   minBoundary = 0,
@@ -32,10 +42,10 @@ export default function CustomSlider({
   initVal = 5,
   colorHighlight = "#008ee6",
   setValue,
-}) {
+}: CustomSliderProps) => {
   // ----------------- Slider ----------------------- //
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const [forceRender, setForceRender] = React.useState(0);
+
   const animState = React.useRef({
     displayMinVal: 0,
     sliderWidth: 0,
@@ -49,14 +59,15 @@ export default function CustomSlider({
     initOffSet: 0,
   }).current;
 
-  const [sliderHeight, setSliderHeight] = React.useState(0);
+  // const [sliderHeight, setSliderHeight] = React.useState(0);
   const [sliderWidth, setSliderWidth] = React.useState(0);
   const [sliderCenter, setSliderCenter] = React.useState(0);
   const [initOffset, setInitOffset] = React.useState(0);
   const [minBoundaryPosition, setMinBoundaryPosition] = React.useState(0);
   const [maxBoundaryPosition, setMaxBoundaryPosition] = React.useState(0);
+
   const setSliderSize = (height, width) => {
-    setSliderHeight(height);
+    // setSliderHeight(height);
     const sWidth = width - height; // - height : Avoid the slider to overlap the borders
     setSliderWidth(sWidth);
     animState.sliderHeight = height;
@@ -85,7 +96,6 @@ export default function CustomSlider({
       animState.offSet +
       animState.initOffSet -
       animState.clampOffSet;
-    setForceRender(newVal); // Update the state so the render function is called (and elements are updated on screen)
 
     let filterVal = Math.trunc(
       (newVal + animState.sliderWidth / 2 + animState.stepWidth / 2) /
@@ -112,19 +122,22 @@ export default function CustomSlider({
       },
       onPanResponderMove: (e, gesture) => {
         placeSlider();
-        Animated.event([null, { dx: pan.x, dy: pan.y }], {})(e, {
+        Animated.event([null, { dx: pan.x, dy: pan.y }], {
+          useNativeDriver: false,
+        })(e, {
           dx: gesture.dx,
           dy: 0,
         });
       },
-      onPanResponderRelease: (e, gesture) => {
+      onPanResponderRelease: () => {
         placeSlider();
         animState.offSet = animState.offSet + pan.x._value;
         pan.flattenOffset();
       },
     });
   };
-  const [panResponder, setPanResponder] = React.useState(getPanResponder());
+
+  const [panResponder] = React.useState(getPanResponder());
 
   // ----------------- Render ----------------------- //
   return (
@@ -209,13 +222,13 @@ export default function CustomSlider({
           </Animated.View>
           <View style={[s.boundary, { left: 0 }]} />
         </View>
-        {/* <View style={s.labelValue}>
-          <Text style={s.labelValueText}>{animState.displayMinVal}</Text> */}
-        {/* </View> */}
+        <View style={s.labelValue}>
+          <Text style={s.labelValueText}>{animState.displayMinVal}</Text>
+        </View>
       </View>
     </View>
   );
-}
+};
 
 const s = StyleSheet.create({
   mainContainer: {

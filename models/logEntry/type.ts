@@ -3,6 +3,8 @@ export type LogEntryStats = {
   mood?: number;
   energy?: number;
   anxiety?: number;
+  exercise?: boolean;
+  monthlyCycle?: boolean;
 };
 
 export type LogEntry = {

@@ -2,61 +2,64 @@ import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import CustomSlider from "@/components/CustomSlider";
+import { CustomSlider } from "@/components/CustomSlider";
+import { CustomCheckbox } from "@/components/CustomCheckbox";
 import { Colors } from "@/constants/Colors";
+import {
+  MOOD_ICON_MAP,
+  BATTERY_ICON_MAP,
+  ANXIETY_ICON_MAP,
+} from "@/constants/JournalIcons";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { useStore } from "@/hooks/useStore";
-import type { LogEntry } from "@/models/logEntry/type";
-
-const MOOD_ICON_MAP = {
-  0: "emoticon-frown",
-  1: "emoticon-sad",
-  2: "emoticon-sad",
-  3: "emoticon-confused",
-  4: "emoticon-neutral",
-  5: "emoticon-neutral",
-  6: "emoticon-happy",
-  7: "emoticon-happy",
-  8: "emoticon-happy",
-  9: "emoticon-excited",
-  10: "emoticon-excited",
-};
-
-const BATTERY_ICON_MAP = {
-  0: "battery-10",
-  1: "battery-10",
-  2: "battery-20",
-  3: "battery-30",
-  4: "battery-40",
-  5: "battery-50",
-  6: "battery-60",
-  7: "battery-70",
-  8: "battery-80",
-  9: "battery-90",
-  10: "battery",
-};
+// import { useStore } from "@/hooks/useStore";
+import type { LogEntryStats } from "@/models/logEntry/type";
 
 export const JournalForm = () => {
-  const { dispatch } = useStore();
+  // const { dispatch } = useStore();
   const colorScheme = useColorScheme();
-  const [mood, setMood] = useState<number>(5);
-  const [energy, setEnergy] = useState<number>(5);
+  const [logEntryStats, setLogEntryStats] = useState<LogEntryStats>({
+    mood: 5,
+    energy: 5,
+    anxiety: 5,
+    exercise: false,
+    monthlyCycle: false,
+  });
+
+  const setStat = (statKey: string) => (value: number | boolean) =>
+    setLogEntryStats((prevState) => ({ ...prevState, [statKey]: value }));
 
   return (
     <View style={[styles.contents]}>
       <CustomSlider
         name="Mood"
-        icon={MOOD_ICON_MAP[mood]}
-        initVal={mood}
-        setValue={setMood}
+        icon={MOOD_ICON_MAP[logEntryStats.mood]}
+        initVal={logEntryStats.mood}
+        setValue={setStat("mood")}
         colorHighlight={Colors[colorScheme].text}
       />
       <CustomSlider
         name="Energy"
-        icon={BATTERY_ICON_MAP[energy]}
-        initVal={energy}
-        setValue={setEnergy}
+        icon={BATTERY_ICON_MAP[logEntryStats.energy]}
+        initVal={logEntryStats.energy}
+        setValue={setStat("energy")}
         colorHighlight={Colors[colorScheme].text}
+      />
+      <CustomSlider
+        name="Anxiety"
+        icon={ANXIETY_ICON_MAP[logEntryStats.anxiety]}
+        initVal={logEntryStats.anxiety}
+        setValue={setStat("anxiety")}
+        colorHighlight={Colors[colorScheme].text}
+      />
+      <CustomCheckbox
+        text="Exercise?"
+        value={logEntryStats.exercise}
+        setValue={setStat("exercise")}
+      />
+      <CustomCheckbox
+        text="Monthly Cycle?"
+        value={logEntryStats.period}
+        setValue={setStat("period")}
       />
       <View style={styles.submitButtonContainer}>
         <Pressable>
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     maxWidth: "80%",
   },
   submitButtonContainer: {
-    marginTop: 24,
+    marginTop: 36,
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",

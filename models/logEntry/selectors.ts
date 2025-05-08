@@ -41,6 +41,11 @@ export const addResistToTodaysLog = (entries: LogEntry[]): LogEntry[] => {
 export const fillMissingLogs = (entries: LogEntry[]): LogEntry[] => {
   const filledEntries = [...entries];
   const lastEntry: LogEntry = getLastEntry(filledEntries);
+
+  if (!lastEntry) {
+    return filledEntries;
+  }
+
   const logGapCount: number = differenceInCalendarDays(
     new Date(),
     lastEntry.date,

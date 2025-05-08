@@ -50,7 +50,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "OCD QUEST",
+          title: "OCD JOURNEY",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               size={28}

@@ -87,7 +87,7 @@ export default function HomeScreen() {
         <AnimatedCircle
           cx="50"
           cy="50"
-          stroke={Colors[colorScheme].tertiary}
+          stroke={Colors[colorScheme].secondary}
           fill="transparent"
           animatedProps={animatedProps}
         />

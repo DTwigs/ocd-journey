@@ -5,7 +5,7 @@ import {
   subDays,
 } from "date-fns";
 import { make } from "./creation";
-import type LogEntry from "./type";
+import type { LogEntry, LogEntryStats } from "./type";
 
 export const hasTodaysLog = (entries: LogEntry[]): boolean =>
   entries.length > 0
@@ -29,6 +29,27 @@ export const addResistToTodaysLog = (entries: LogEntry[]): LogEntry[] => {
     updatedEntries.push(
       make(startOfDay(new Date()).toISOString(), {
         resists: 1,
+      }),
+    );
+  }
+
+  return updatedEntries;
+};
+
+export const addStatsToTodaysLog = (
+  entries: LogEntry[],
+  stats = LogEntryStats,
+): LogEntry[] => {
+  let updatedEntries = [...entries];
+  if (hasTodaysLog(updatedEntries)) {
+    const lastEntry = getLastEntry(updatedEntries);
+    lastEntry.stats = { ...lastEntry.stats, ...stats };
+  } else {
+    updatedEntries = fillMissingLogs(updatedEntries);
+    updatedEntries.push(
+      make(startOfDay(new Date()).toISOString(), {
+        resists: 0,
+        ...stats,
       }),
     );
   }

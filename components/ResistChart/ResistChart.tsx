@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import { ChartColumn } from "./ChartColumn";
 import { Colors } from "@/constants/Colors";
@@ -7,11 +8,16 @@ import { useStore } from "@/hooks/useStore";
 import type { LogEntry } from "@/models/logEntry/type";
 
 export const ResistChart = () => {
+  const router = useRouter();
   const { logEntries } = useStore();
   const colorScheme = useColorScheme();
 
   return (
-    <Pressable onPress={() => {}}>
+    <Pressable
+      onPress={() => {
+        router.navigate("/stats");
+      }}
+    >
       <View
         style={[
           styles.contents,

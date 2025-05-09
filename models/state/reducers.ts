@@ -1,5 +1,5 @@
 import { SET_STATE } from "./actions";
-import type State from "../state/type";
+import type { State } from "../state/type";
 
 type StateReducers = {
   [SET_STATE]: (state: State) => State;

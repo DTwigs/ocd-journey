@@ -11,11 +11,11 @@ import {
   ANXIETY_ICON_MAP,
 } from "@/constants/JournalIcons";
 import { useColorScheme } from "@/hooks/useColorScheme";
-// import { useStore } from "@/hooks/useStore";
+import { useStore } from "@/hooks/useStore";
 import type { LogEntryStats } from "@/models/logEntry/type";
 
 export const JournalForm = () => {
-  // const { dispatch } = useStore();
+  const { dispatch } = useStore();
   const colorScheme = useColorScheme();
   const [logEntryStats, setLogEntryStats] = useState<LogEntryStats>({
     mood: 5,
@@ -27,6 +27,10 @@ export const JournalForm = () => {
 
   const setStat = (statKey: string) => (value: number | boolean) =>
     setLogEntryStats((prevState) => ({ ...prevState, [statKey]: value }));
+
+  const onPress = () => {
+    dispatch({ type: logEntryModel.SAVE_LOG, value: logEntryStats });
+  };
 
   return (
     <View style={[styles.contents]}>
@@ -62,7 +66,7 @@ export const JournalForm = () => {
         setValue={setStat("period")}
       />
       <View style={styles.submitButtonContainer}>
-        <Pressable>
+        <Pressable onPress={onPress}>
           <MaterialCommunityIcons
             size={96}
             name="check-circle"

@@ -1,5 +1,5 @@
-import type LogEntry from "../logEntry/type";
+import type { LogEntries } from "../logEntry/type";
 
 export type State = {
-  logEntries: LogEntry[];
+  logEntries: LogEntries;
 };

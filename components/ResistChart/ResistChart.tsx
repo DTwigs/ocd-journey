@@ -5,7 +5,6 @@ import { ChartColumn } from "./ChartColumn";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useStore } from "@/hooks/useStore";
-import type { LogEntry } from "@/models/logEntry/type";
 
 export const ResistChart = () => {
   const router = useRouter();
@@ -24,9 +23,11 @@ export const ResistChart = () => {
           { borderBottomColor: Colors[colorScheme].text },
         ]}
       >
-        {[...logEntries.slice(0, 20)].map((logEntry: LogEntry) => (
-          <ChartColumn count={logEntry.stats.resists} key={logEntry.date} />
-        ))}
+        {Array.from(logEntries)
+          .slice(0, 20)
+          .map(([date, stats]) => {
+            return <ChartColumn count={stats.resists} key={date} />;
+          })}
       </View>
     </Pressable>
   );

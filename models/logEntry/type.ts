@@ -7,7 +7,4 @@ export type LogEntryStats = {
   monthlyCycle?: boolean;
 };
 
-export type LogEntry = {
-  date: string;
-  stats: LogEntryData;
-};
+export type LogEntries = Map<string, LogEntryStats>;

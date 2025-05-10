@@ -35,10 +35,11 @@ export const StoreProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = async () => {
+    // await db.removeLogEntriesData();
     const logEntries = await db.getLogEntries();
     dispatch({
       type: stateModel.SET_STATE,
-      value: { logEntries: logEntries ?? [] },
+      value: { logEntries: new Map(logEntries) },
     });
   };
 

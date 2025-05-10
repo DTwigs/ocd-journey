@@ -1,11 +1,13 @@
-import type { LogEntry, LogEntryStats } from "./type";
+import type { LogEntryStats } from "./type";
 
-export const make = (date: string, statsOverrides: LogEntryStats): LogEntry => {
+export const makeStats = (statsOverrides: LogEntryStats): LogEntryStats => {
   return {
-    date,
-    stats: {
-      resists: 0,
-      ...statsOverrides,
-    },
+    resists: 0,
+    mood: null,
+    energy: null,
+    anxiety: null,
+    exercise: false,
+    monthlyCycle: false,
+    ...statsOverrides,
   };
 };

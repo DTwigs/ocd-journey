@@ -1,53 +1,57 @@
-import {
-  differenceInCalendarDays,
-  isSameDay,
-  startOfDay,
-  subDays,
-} from "date-fns";
-import { make } from "./creation";
+import { differenceInCalendarDays, subDays, format } from "date-fns";
+import { KEY_DATE_FORMAT } from "@/constants/Dates";
+import { makeStats } from "./creation";
 import type { LogEntry, LogEntryStats } from "./type";
 
-export const hasTodaysLog = (entries: LogEntry[]): boolean =>
-  entries.length > 0
-    ? isSameDay(new Date(), getLastEntry(entries).date)
-    : false;
+export const formatDateKey = (date: Date): string =>
+  format(date, KEY_DATE_FORMAT);
 
-export const getTodaysLog = (entries: LogEntry[]): LogEntry =>
-  hasTodaysLog(entries)
-    ? entries[0]
-    : { date: startOfDay(new Date()).toISOString(), entry: { resists: 0 } };
+export const hasTodaysLog = (entries: LogEntries): boolean => {
+  const today = formatDateKey(new Date());
+  return entries.has(today);
+};
 
-export const getLastEntry = (entries: LogEntryp[]): LogEntry =>
-  entries[entries.length - 1];
+// return [date, LogEntryStats] as an array
+export const getLastEntry = (
+  entries: LogEntries,
+): Array<string | LogEntryStats> => Array.from(entries).pop();
 
-export const addResistToTodaysLog = (entries: LogEntry[]): LogEntry[] => {
-  let updatedEntries = [...entries];
-  if (hasTodaysLog(updatedEntries)) {
-    getLastEntry(updatedEntries).stats.resists += 1;
+export const addResistToTodaysLog = (entries: LogEntries): LogEntries => {
+  const today = formatDateKey(new Date());
+  let updatedEntries = new Map<string, LogEntryStats>(entries);
+
+  if (updatedEntries.has(today)) {
+    const todaysEntry: LogEntryStats = updatedEntries.get(today);
+    updatedEntries.set(today, {
+      ...todaysEntry,
+      resists: todaysEntry.resists >= 0 ? todaysEntry.resists + 1 : 1,
+    });
   } else {
     updatedEntries = fillMissingLogs(updatedEntries);
-    updatedEntries.push(
-      make(startOfDay(new Date()).toISOString(), {
-        resists: 1,
-      }),
-    );
+    updatedEntries.set(today, makeStats({ resists: 1 }));
   }
 
   return updatedEntries;
 };
 
 export const addStatsToTodaysLog = (
-  entries: LogEntry[],
-  stats = LogEntryStats,
-): LogEntry[] => {
-  let updatedEntries = [...entries];
-  if (hasTodaysLog(updatedEntries)) {
-    const lastEntry = getLastEntry(updatedEntries);
-    lastEntry.stats = { ...lastEntry.stats, ...stats };
+  entries: LogEntries,
+  stats: LogEntryStats,
+): LogEntries => {
+  let updatedEntries = new Map(entries);
+  const today = formatDateKey(new Date());
+
+  if (updatedEntries.has(today)) {
+    const todaysEntry: LogEntryStats = updatedEntries.get(today);
+    updatedEntries.set(today, {
+      ...todaysEntry,
+      ...stats,
+    });
   } else {
     updatedEntries = fillMissingLogs(updatedEntries);
-    updatedEntries.push(
-      make(startOfDay(new Date()).toISOString(), {
+    updatedEntries.set(
+      today,
+      makeStats({
         resists: 0,
         ...stats,
       }),
@@ -59,17 +63,18 @@ export const addStatsToTodaysLog = (
 
 // If the user hasnt been in the app in a while there will be blank days
 // that needed to be added in to the array of LogEntries
-export const fillMissingLogs = (entries: LogEntry[]): LogEntry[] => {
-  const filledEntries = [...entries];
+export const fillMissingLogs = (entries: LogEntries): LogEntries => {
+  const filledEntries = new Map(entries);
   const lastEntry: LogEntry = getLastEntry(filledEntries);
 
   if (!lastEntry) {
     return filledEntries;
   }
 
+  const [lastEntryDate] = lastEntry; // the first item in the last entry array is the date key
   const logGapCount: number = differenceInCalendarDays(
-    new Date(),
-    lastEntry.date,
+    formatDateKey(new Date()),
+    lastEntryDate,
   );
   const toFill: number = logGapCount - 1;
 
@@ -78,10 +83,9 @@ export const fillMissingLogs = (entries: LogEntry[]): LogEntry[] => {
   }
 
   for (let i = toFill; i > 0; i--) {
-    filledEntries.push(
-      make(startOfDay(subDays(new Date(), i)).toISOString(), {
-        resists: 0,
-      }),
+    filledEntries.set(
+      formatDateKey(subDays(new Date(), i)),
+      makeStats({ resists: 0 }),
     );
   }
 

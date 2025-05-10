@@ -1,22 +1,21 @@
-import { addResistToTodaysLog, addStatsToTodaysLog } from "./selectors";
+import {
+  addResistToTodaysLog,
+  addStatsToTodaysLog,
+  formatDateKey,
+} from "./selectors";
 import { ADD_RESIST, SAVE_LOG } from "./actions";
-// import { make } from "./creation";
+import { makeStats } from "./creation";
 import type { State } from "../state/type";
-// import { startOfDay, subDays } from "date-fns";
+import { subDays } from "date-fns";
 import * as db from "@/db";
 import type { LogEntryStats } from "./type";
 
-// const mockData = [
-//   make(startOfDay(subDays(new Date(), 5).toISOString()), {
-//     resists: 2,
-//   }),
-//   make(startOfDay(subDays(new Date(), 4).toISOString()), {
-//     resists: 1,
-//   }),
-// ];
+const mockData = new Map();
+mockData.set(formatDateKey(subDays(new Date(), 5)), makeStats({ resists: 5 }));
+mockData.set(formatDateKey(subDays(new Date(), 4)), makeStats({ resists: 4 }));
 
-export const initialState = {
-  logEntries: [], //[...mockData],
+export const initialState: State = {
+  logEntries: new Map<string, LogEntryStats>(),
 };
 
 type LogEntryReducers = {

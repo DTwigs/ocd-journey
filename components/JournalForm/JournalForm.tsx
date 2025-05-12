@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -16,6 +17,7 @@ import { logEntryModel } from "@/models/logEntry";
 import type { LogEntryStats } from "@/models/logEntry/type";
 
 export const JournalForm = () => {
+  const router = useRouter();
   const { dispatch } = useStore();
   const colorScheme = useColorScheme();
   const [logEntryStats, setLogEntryStats] = useState<LogEntryStats>({
@@ -31,6 +33,7 @@ export const JournalForm = () => {
 
   const onPress = () => {
     dispatch({ type: logEntryModel.SAVE_LOG, value: logEntryStats });
+    router.navigate("/(tabs)/stats");
   };
 
   return (

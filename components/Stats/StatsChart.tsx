@@ -15,10 +15,11 @@ type StatsChartProps = {
 
 export const StatsChart = ({ entries, stat }: StatsChartProps) => {
   const colorScheme = useColorScheme();
-  const { chartData, max } = getChartDataRange(entries, stat);
+  const { chartData, max } = getChartDataRange(entries, stat.toLowerCase());
   // console.log({ chartData, max });
 
-  const chartMax = max % 2 !== 0 ? max + 1 : max;
+  let chartMax = max % 2 !== 0 ? max + 1 : max;
+  chartMax = Math.max(chartMax, 10);
 
   return (
     <View style={styles.contents}>
@@ -27,7 +28,8 @@ export const StatsChart = ({ entries, stat }: StatsChartProps) => {
         barWidth={26}
         spacing={12}
         barBorderRadius={4}
-        showGradient
+        // showGradient
+        frontColor={Colors[colorScheme].lightText}
         gradientColor={Colors[colorScheme].text}
         xAxisThickness={0}
         xAxisLabelTextStyle={{ color: "gray" }}
@@ -35,8 +37,6 @@ export const StatsChart = ({ entries, stat }: StatsChartProps) => {
         yAxisTextStyle={{ color: "gray" }}
         noOfSections={Math.min(chartMax / 2, 5) || 5}
         maxValue={chartMax}
-        frontColor={Colors[colorScheme].lightText}
-        isAnimated
       />
     </View>
   );

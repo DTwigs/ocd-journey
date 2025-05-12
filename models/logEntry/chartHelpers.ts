@@ -1,6 +1,7 @@
 import { format, subDays } from "date-fns";
 import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
+import { tertiary, secondary, primary } from "@/constants/Colors";
 import type {
   ChartDatum,
   LogEntries,
@@ -21,8 +22,6 @@ export const getChartDataRange = (
   let endIndex = entries.size;
   if (numberOfRecords > 0) {
     endIndex = startIndex + numberOfRecords - 1;
-    // const maxEndIndex = startIndex + numberOfRecords - 1;
-    // endIndex = maxEndIndex > entries.size ? entries.size : maxEndIndex;
   }
 
   const arrOfKeys = [];
@@ -32,13 +31,28 @@ export const getChartDataRange = (
 
   const minMaxArray = [];
   const chartData = arrOfKeys.map((dateKey: string) => {
-    const value = entries.get(dateKey)?.[statName] ?? 0;
+    const entry = entries.get(dateKey);
+    const value = entry?.[statName] ?? 0;
     minMaxArray.push(value);
     return {
       label: format(dateKey, "EEEEEE"),
       value,
+      frontColor: getBarColor(entry),
     };
   });
 
   return { chartData, max: Math.max(...minMaxArray) };
+};
+
+const getBarColor = (entry) => {
+  if (!entry) {
+    return;
+  }
+  if (entry.period && entry.exercise) {
+    return primary;
+  } else if (entry.period) {
+    return secondary;
+  } else if (entry.exercise) {
+    return tertiary;
+  }
 };

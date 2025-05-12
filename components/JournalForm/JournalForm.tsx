@@ -12,6 +12,7 @@ import {
 } from "@/constants/JournalIcons";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useStore } from "@/hooks/useStore";
+import { logEntryModel } from "@/models/logEntry";
 import type { LogEntryStats } from "@/models/logEntry/type";
 
 export const JournalForm = () => {

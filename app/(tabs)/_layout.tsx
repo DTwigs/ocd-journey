@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, Pressable, StyleSheet } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -16,6 +16,18 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].text,
+        headerRight: () => (
+          <Pressable
+            onPress={() => alert("This is a button!")}
+            style={styles.headerRight}
+          >
+            <MaterialCommunityIcons
+              size={28}
+              name="cog"
+              color={Colors[colorScheme ?? "light"].text}
+            />
+          </Pressable>
+        ),
         headerShown: true,
         headerStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
@@ -69,6 +81,22 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="stats"
+        options={{
+          title: "Stats",
+          // href: null,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons size={28} name="cat" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerRight: {
+    marginRight: 25,
+  },
+});

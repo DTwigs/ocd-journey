@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import StatsContainer from "@/components/Stats";
 
 export default function Stats() {
   const colorScheme = useColorScheme();
@@ -12,7 +13,7 @@ export default function Stats() {
         { backgroundColor: Colors[colorScheme].background },
       ]}
     >
-      <Text>hi</Text>
+      <StatsContainer />
     </View>
   );
 }
@@ -23,6 +24,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "red",
   },
 });

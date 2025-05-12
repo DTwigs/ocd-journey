@@ -3,6 +3,7 @@ import { logEntryModel } from "@/models/logEntry";
 import { stateModel } from "@/models/state";
 import * as db from "@/db";
 import { uiError } from "@/utils/logger";
+import { mockLogEntries } from "@/mockData/mockLogEntries";
 import type State from "@/models/state/type";
 
 const initialState = {
@@ -36,7 +37,10 @@ export const StoreProvider = (props) => {
 
   const init = async () => {
     // await db.removeLogEntriesData();
+    // use mockData
+    // const logEntries = mockLogEntries;
     const logEntries = await db.getLogEntries();
+
     dispatch({
       type: stateModel.SET_STATE,
       value: { logEntries: new Map(logEntries) },

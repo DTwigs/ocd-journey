@@ -14,7 +14,7 @@ export const ResistChart = () => {
   return (
     <Pressable
       onPress={() => {
-        router.navigate("/stats");
+        router.navigate("/(tabs)/stats");
       }}
     >
       <View

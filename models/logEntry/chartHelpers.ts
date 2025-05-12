@@ -1,7 +1,8 @@
-import { format, subDays } from "date-fns";
+import { subDays } from "date-fns";
 import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
-import { tertiary, secondary, primary } from "@/constants/Colors";
+import { tertiary, secondary } from "@/constants/Colors";
+import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
 import type {
   ChartDatum,
   LogEntries,
@@ -30,29 +31,51 @@ export const getChartDataRange = (
   }
 
   const minMaxArray = [];
-  const chartData = arrOfKeys.map((dateKey: string) => {
+  const chartData = arrOfKeys.map((dateKey: string, index: number) => {
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
     minMaxArray.push(value);
+    const [frontColor, gradientColor] = getBarColors(
+      entry?.period,
+      entry?.exercise,
+    );
     return {
-      label: format(dateKey, "EEEEEE"),
+      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, index),
       value,
-      frontColor: getBarColor(entry),
+      labelWidth: CHART_PROPS_BY_INTERVAL[numberOfRecords].labelWidth,
+      frontColor,
+      gradientColor,
     };
   });
+
+  console.log({ chartData });
 
   return { chartData, max: Math.max(...minMaxArray) };
 };
 
-const getBarColor = (entry) => {
-  if (!entry) {
-    return;
+const getBarColors = (stat1, stat2) => {
+  if (stat1 && stat2) {
+    return [secondary, tertiary];
+  } else if (stat1) {
+    return [secondary, secondary];
+  } else if (stat2) {
+    return [tertiary, tertiary];
   }
-  if (entry.period && entry.exercise) {
-    return primary;
-  } else if (entry.period) {
-    return secondary;
-  } else if (entry.exercise) {
-    return tertiary;
-  }
+  return [null, null];
 };
+
+// const getBarFrontColor = (stat1, stat2) => {
+//   if (stat1) {
+//     return secondary;
+//   } else if (stat2) {
+//     return tertiary;
+//   }
+// };
+
+// const getBarGradientColor = (stat1, stat2) => {
+//   if (stat1) {
+//     return tertiary;
+//   } else if (stat2) {
+//     return secondary;
+//   }
+// };

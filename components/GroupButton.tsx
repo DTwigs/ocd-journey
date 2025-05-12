@@ -3,13 +3,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export const GroupButton = ({ items, colors, selected }) => {
   const buildGroupButtons = () => {
-    return items.map(({ icon, label, onPress }, index) => {
-      const isSelected = label === selected;
+    return items.map(({ icon, value, label, onPress }, index) => {
+      const isSelected = value === selected;
       const buttonStyles = [
         styles.buttonGroupBtn,
         {
-          backgroundColor: colors.text,
-          color: colors.background,
+          backgroundColor: colors.backgroundTint,
+          color: colors.text,
         },
       ];
 
@@ -19,22 +19,23 @@ export const GroupButton = ({ items, colors, selected }) => {
 
       if (isSelected) {
         buttonStyles.push({
-          backgroundColor: colors.secondary,
-          color: colors.text,
+          backgroundColor: colors.lightText, //colors.background,
+          color: colors.background,
         });
       }
 
       return (
         <Pressable onPress={onPress} key={label} style={buttonStyles}>
-          <MaterialCommunityIcons
-            size={18}
-            name={icon}
-            color={isSelected ? colors.text : colors.background}
-          />
+          {icon && (
+            <MaterialCommunityIcons
+              size={18}
+              name={icon}
+              color={isSelected ? colors.background : colors.text}
+            />
+          )}
           <Text
             style={{
-              color: isSelected ? colors.text : colors.background,
-              fontWeight: "bold",
+              color: isSelected ? colors.background : colors.text,
             }}
           >
             {label}
@@ -57,8 +58,11 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContents: "center",
     alignItems: "center",
-    paddingHorizontal: 18,
+    width: 80,
+    minHeight: 34,
     paddingVertical: 8,
+    borderRightWidth: 1,
+    borderRightColor: "#EFE9E7",
   },
   firstButton: {
     borderTopLeftRadius: 4,

@@ -14,6 +14,9 @@ import type {
 // mood, energy, anxiety, resists
 // precise, average?
 
+const FACTOR_BAR_HEIGHT = 0.3;
+const BORDER_RADIUS = 1;
+
 export const getChartDataRange = (
   entries: LogEntries,
   statName: LogEntryCoreStatName,
@@ -35,47 +38,42 @@ export const getChartDataRange = (
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
     minMaxArray.push(value);
-    const [frontColor, gradientColor] = getBarColors(
-      entry?.period,
-      entry?.exercise,
-    );
+
+    const factorNum = Number(entry?.period ?? 0) + Number(entry?.exercise ?? 0);
+
+    const stacks = [statBar(value, factorNum)];
+    if (entry?.period) {
+      stacks.push(factorBar(false, factorNum === 0));
+    }
+    if (entry?.exercise) {
+      stacks.push(factorBar(true, true));
+    }
+
     return {
       label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, index),
-      value,
+      stacks,
       labelWidth: CHART_PROPS_BY_INTERVAL[numberOfRecords].labelWidth,
-      frontColor,
-      gradientColor,
     };
   });
-
-  console.log({ chartData });
 
   return { chartData, max: Math.max(...minMaxArray) };
 };
 
-const getBarColors = (stat1, stat2) => {
-  if (stat1 && stat2) {
-    return [secondary, tertiary];
-  } else if (stat1) {
-    return [secondary, secondary];
-  } else if (stat2) {
-    return [tertiary, tertiary];
-  }
-  return [null, null];
+const statBar = (value, factorNum) => {
+  return {
+    value: value > 0 ? value - factorNum * FACTOR_BAR_HEIGHT : value,
+    borderBottomLeftRadius: BORDER_RADIUS,
+    borderBottomRightRadius: BORDER_RADIUS,
+    borderTopLeftRadius: factorNum === 0 ? BORDER_RADIUS : 0,
+    borderTopRightRadius: factorNum === 0 ? BORDER_RADIUS : 0,
+  };
 };
 
-// const getBarFrontColor = (stat1, stat2) => {
-//   if (stat1) {
-//     return secondary;
-//   } else if (stat2) {
-//     return tertiary;
-//   }
-// };
-
-// const getBarGradientColor = (stat1, stat2) => {
-//   if (stat1) {
-//     return tertiary;
-//   } else if (stat2) {
-//     return secondary;
-//   }
-// };
+const factorBar = (isExercise, isTop) => {
+  return {
+    value: FACTOR_BAR_HEIGHT,
+    color: isExercise ? tertiary : secondary,
+    borderTopLeftRadius: isTop ? BORDER_RADIUS : 0,
+    borderTopRightRadius: isTop ? BORDER_RADIUS : 0,
+  };
+};

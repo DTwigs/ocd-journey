@@ -51,29 +51,25 @@ export const StatsContainer = () => {
 
   const intervalButtons = [
     {
-      // icon: MOOD_ICON_MAP[10],
       label: "Week",
       value: INTERVALS.WEEK,
       onPress: () => setSelectedInterval(INTERVALS.WEEK),
     },
     {
-      // icon: BATTERY_ICON_MAP[8],
       label: "Month",
       value: INTERVALS.MONTH,
       onPress: () => setSelectedInterval(INTERVALS.MONTH),
     },
     {
-      // icon: ANXIETY_ICON_MAP[10],
       label: "3-Months",
       value: INTERVALS.QUARTER,
       onPress: () => setSelectedInterval(INTERVALS.QUARTER),
     },
-    {
-      // icon: "arrow-up-bold-circle",
-      label: "All",
-      value: INTERVALS.ALL,
-      onPress: () => setSelectedInterval(INTERVALS.ALL),
-    },
+    // {
+    //   label: "All",
+    //   value: INTERVALS.ALL,
+    //   onPress: () => setSelectedInterval(INTERVALS.ALL),
+    // },
   ];
 
   return (

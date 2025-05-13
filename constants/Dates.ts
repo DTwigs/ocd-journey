@@ -1,4 +1,4 @@
-export const KEY_DATE_FORMAT = "y-M-d";
+export const KEY_DATE_FORMAT = "y-MM-dd";
 
 export const INTERVALS = {
   WEEK: 7,

@@ -10,6 +10,7 @@ export const ResistChart = () => {
   const router = useRouter();
   const { logEntries } = useStore();
   const colorScheme = useColorScheme();
+  const logEntryArr = Array.from(logEntries).reverse();
 
   return (
     <Pressable
@@ -23,11 +24,9 @@ export const ResistChart = () => {
           { borderBottomColor: Colors[colorScheme].text },
         ]}
       >
-        {Array.from(logEntries)
-          .slice(0, 20)
-          .map(([date, stats]) => {
-            return <ChartColumn count={stats.resists} key={date} />;
-          })}
+        {logEntryArr.slice(0, 20).map(([date, stats]) => {
+          return <ChartColumn count={stats.resists} key={date} />;
+        })}
       </View>
     </Pressable>
   );
@@ -35,7 +34,7 @@ export const ResistChart = () => {
 
 const styles = StyleSheet.create({
   contents: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     justifyContent: "space-between",
     alignItems: "flex-end",
     maxWidth: "80%",

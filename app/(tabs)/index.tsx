@@ -1,59 +1,28 @@
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import Svg from "react-native-svg";
-import { useCallback } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  useSharedValue,
-  useAnimatedProps,
-  withTiming,
-  withSequence,
-  SVGAdapter,
-} from "react-native-reanimated";
-
+import { useCallback, useRef } from "react";
 import { throttle } from "@/utils/throttle";
 import { ThemedText } from "@/components/ThemedText";
-import { AnimatedCircle } from "@/components/AnimatedCircle";
 import ResistChart from "@/components/ResistChart";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useStore } from "@/hooks/useStore";
 import { logEntryModel } from "@/models/logEntry";
-
-const CIRCLE_ANIM_STEP_1 = 700;
-const CIRCLE_ANIM_STEP_2 = 500;
-const CIRCLE_ANIM_STEP_3 = 0;
+import { AnimatedPlusExp } from "@/components/AnimatedPlusExp";
+import { AnimatedSpringIcon } from "@/components/AnimatedSpringIcon";
 
 export default function HomeScreen() {
   const { dispatch } = useStore();
   const colorScheme = useColorScheme();
-  const circleProps = useSharedValue<number>({ r: 10, stroke: 2 });
-
-  const animateOnPress = () => {
-    circleProps.value = withSequence(
-      withTiming({ stroke: 300, r: 160 }, { duration: CIRCLE_ANIM_STEP_1 }),
-      withTiming({ stroke: 10, r: 300 }, { duration: CIRCLE_ANIM_STEP_2 }),
-      withTiming({ stroke: 2, r: 10 }, { duration: CIRCLE_ANIM_STEP_3 }),
-    );
-  };
+  const animatedPlusExpRef = useRef();
+  const animatedIconRef = useRef();
 
   const handlePress = useCallback(
-    throttle(
-      () => {
-        dispatch({ type: logEntryModel.ADD_RESIST });
-        animateOnPress();
-      },
-      CIRCLE_ANIM_STEP_1 + CIRCLE_ANIM_STEP_2 + CIRCLE_ANIM_STEP_3 + 100,
-    ),
+    throttle(() => {
+      dispatch({ type: logEntryModel.ADD_RESIST });
+      animatedIconRef.current.animate();
+      animatedPlusExpRef.current.animate();
+    }, 1000),
     [throttle],
-  );
-
-  const animatedProps = useAnimatedProps(
-    () => ({
-      r: circleProps.value.r,
-      strokeWidth: circleProps.value.stroke,
-    }),
-    null,
-    SVGAdapter,
   );
 
   return (
@@ -65,33 +34,22 @@ export default function HomeScreen() {
     >
       <View style={styles.contents}>
         <Pressable onPress={handlePress}>
-          <MaterialCommunityIcons
+          <AnimatedSpringIcon
             size={128}
-            name="arrow-up-bold-circle"
+            icon="arrow-up-bold-circle"
             color={Colors[colorScheme].text}
+            ref={animatedIconRef}
           />
         </Pressable>
         <ThemedText style={{ color: Colors[colorScheme].lightText }}>
           Press every time you resist a compulsion!
         </ThemedText>
       </View>
+
       <View style={[styles.chart]}>
+        <AnimatedPlusExp text="+1 Resist" ref={animatedPlusExpRef} />
         <ResistChart />
       </View>
-      <Svg
-        height="200%"
-        width="100%"
-        viewBox="0 0 100 100"
-        style={{ position: "absolute", top: "-74%", elevation: 0, zIndex: 0 }}
-      >
-        <AnimatedCircle
-          cx="50"
-          cy="50"
-          stroke={Colors[colorScheme].secondary}
-          fill="transparent"
-          animatedProps={animatedProps}
-        />
-      </Svg>
     </ScrollView>
   );
 }

@@ -19,21 +19,17 @@ type StatsChartProps = {
 export const StatsChart = ({ entries, stat, interval }: StatsChartProps) => {
   const colorScheme = useColorScheme();
   const { chartData, max } = getChartDataRange(entries, stat, interval);
-  // console.log({ chartData, max });
 
-  let chartMax = max % 2 !== 0 ? max + 1 : max;
-  chartMax = Math.max(chartMax, 10);
+  const ruleDivider = max < 30 ? 5 : 10;
+  const chartMax = Math.ceil(max / ruleDivider) * ruleDivider;
 
   return (
     <View style={styles.contents}>
       <BarChart
-        data={chartData}
+        stackData={chartData}
         barWidth={CHART_PROPS_BY_INTERVAL[interval].barWidth}
         spacing={CHART_PROPS_BY_INTERVAL[interval].spacing}
-        barBorderRadius={4}
-        showGradient
         frontColor={Colors[colorScheme].lightText}
-        gradientColor={Colors[colorScheme].text}
         xAxisThickness={0}
         xAxisLabelTextStyle={{
           color: "gray",
@@ -42,7 +38,7 @@ export const StatsChart = ({ entries, stat, interval }: StatsChartProps) => {
         }}
         yAxisThickness={0}
         yAxisTextStyle={{ color: "gray" }}
-        noOfSections={chartMax / 2}
+        noOfSections={chartMax / ruleDivider}
         maxValue={chartMax}
       />
     </View>

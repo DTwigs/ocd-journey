@@ -11,10 +11,11 @@ import { ThemedText } from "./ThemedText";
 
 type AnimatedPlusExpProps = {
   text: string;
+  color: string;
 };
 
 export const AnimatedPlusExp = forwardRef(
-  ({ text }: AnimatedPlusExpProps, ref) => {
+  ({ text, color }: AnimatedPlusExpProps, ref) => {
     const animOpacity = useSharedValue<number>(0);
     const animY = useSharedValue<number>(0);
 
@@ -38,7 +39,7 @@ export const AnimatedPlusExp = forwardRef(
 
     return (
       <Animated.View animatedProps={animatedProps}>
-        <ThemedText style={styles.text}>{text}</ThemedText>
+        <ThemedText style={[styles.text, { color }]}>{text}</ThemedText>
       </Animated.View>
     );
   },
@@ -47,6 +48,6 @@ export const AnimatedPlusExp = forwardRef(
 const styles = StyleSheet.create({
   text: {
     fontFamily: "LcdPhone",
-    fontSize: 16,
+    fontSize: 20,
   },
 });

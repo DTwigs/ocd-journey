@@ -47,7 +47,11 @@ export default function HomeScreen() {
       </View>
 
       <View style={[styles.chart]}>
-        <AnimatedPlusExp text="+1 Resist" ref={animatedPlusExpRef} />
+        <AnimatedPlusExp
+          text="+1 Resist"
+          color={Colors[colorScheme].tertiary}
+          ref={animatedPlusExpRef}
+        />
         <ResistChart />
       </View>
     </ScrollView>

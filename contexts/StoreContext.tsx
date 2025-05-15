@@ -36,10 +36,10 @@ export const StoreProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = async () => {
-    // await db.removeLogEntriesData();
+    await db.removeLogEntriesData();
     // use mockData
-    // const logEntries = mockLogEntries;
-    const logEntries = await db.getLogEntries();
+    const logEntries = mockLogEntries;
+    // const logEntries = await db.getLogEntries();
 
     dispatch({
       type: stateModel.SET_STATE,

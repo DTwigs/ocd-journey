@@ -3,12 +3,7 @@ import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
 import { tertiary, secondary } from "@/constants/Colors";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
-import type {
-  ChartDatum,
-  LogEntries,
-  LogEntryCoreStatName,
-  LogEntryType,
-} from "./type";
+import type { ChartDatum, LogEntries, LogEntryCoreStatName } from "./type";
 
 const BORDER_RADIUS = 1;
 const FACTOR_MAP = {
@@ -19,7 +14,7 @@ const FACTOR_MAP = {
 type LineDatum = { value: number; dateKey: string };
 
 type GetChartDataRangeReturnType = {
-  chartData: ChartDatum<LogEntryType>[];
+  chartData: ChartDatum<number>[];
   max: number;
   lineData: LineDatum[];
 };
@@ -36,14 +31,11 @@ export const getChartDataRange = (
     endIndex = startIndex + numberOfRecords - 1;
   }
 
-  const arrOfKeys = [];
-  for (let i = endIndex; i >= startIndex; i--) {
-    arrOfKeys.push(formatDateKey(subDays(new Date(), i)));
-  }
-
   const minMaxArray = [];
   const lineData = [];
-  const chartData = arrOfKeys.map((dateKey: string, index: number) => {
+  const chartData = [];
+  for (let i = endIndex; i >= startIndex; i--) {
+    const dateKey = formatDateKey(subDays(new Date(), i));
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
     minMaxArray.push(value);
@@ -56,17 +48,19 @@ export const getChartDataRange = (
 
     lineData.push({ value, dateKey });
 
-    return {
-      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, index),
+    chartData.push({
+      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, i),
       value,
       frontColor,
+      factor1: entry?.period,
+      factor2: entry?.exercise,
       barBorderTopLeftRadius: BORDER_RADIUS,
       barBorderTopRightRadius: BORDER_RADIUS,
       barBorderBottomLeftRadius: 0,
       barBorderBottomRightRadius: 0,
       labelWidth: CHART_PROPS_BY_INTERVAL[numberOfRecords].labelWidth,
-    };
-  });
+    });
+  }
 
   return { chartData, max: Math.max(...minMaxArray), lineData };
 };
@@ -86,6 +80,27 @@ export const calculateMovingAverage = (arr: LineDatum[]): LineDatum[] => {
     return {
       value: mean,
       dateKey,
+    };
+  });
+};
+
+// Changes only the frontColor of each item
+// we don't want to recalculate the entire array when we change
+// factor color.
+export const updateChartDataWithFactorColor = (
+  chartData: ChartDatum<number>[],
+  factorNumToShow: number,
+) => {
+  return chartData.map((datum: ChartDatum<number>) => {
+    let frontColor;
+    if (factorNumToShow > 0) {
+      const { color } = FACTOR_MAP[factorNumToShow];
+      const value = [null, datum.factor1, datum.factor2][factorNumToShow];
+      frontColor = value ? color : null;
+    }
+    return {
+      ...datum,
+      frontColor,
     };
   });
 };

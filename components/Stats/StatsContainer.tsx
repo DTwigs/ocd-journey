@@ -15,7 +15,6 @@ import { StatsLegend } from "./StatsLegend";
 import { GroupButton } from "@/components/GroupButton";
 
 export const StatsContainer = () => {
-  const [selectedStat, setSelectedStat] = useState<string>(STATS_CORE.mood);
   const [selectedInterval, setSelectedInterval] = useState<number>(
     INTERVALS.WEEK,
   );

@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { BarChart } from "react-native-gifted-charts";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Colors } from "@/constants/Colors";
@@ -9,7 +10,11 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { logEntryModel } from "@/models/logEntry";
 import type { LogEntries, LogEntryCoreStatName } from "@/models/logEntry/type";
 
-const { getChartDataRange, calculateMovingAverage } = logEntryModel;
+const {
+  getChartDataRange,
+  calculateMovingAverage,
+  updateChartDataWithFactorColor,
+} = logEntryModel;
 
 type StatsChartProps = {
   entries: LogEntries;
@@ -21,6 +26,22 @@ type StatsChartProps = {
   selectedFactor?: number;
 };
 
+async function asyncGetChartDataRange(...props) {
+  const SLEEP_TIME_MAP = {
+    [INTERVALS.WEEK]: 500,
+    [INTERVALS.MONTH]: 700,
+    [INTERVALS.QUARTER]: 1000,
+  };
+  return new Promise((resolve) => {
+    const result = getChartDataRange.apply(this, props);
+    const movingAverageLine = calculateMovingAverage(result.lineData);
+    setTimeout(
+      () => resolve({ ...result, lineData: movingAverageLine }),
+      SLEEP_TIME_MAP[props.interval],
+    );
+  });
+}
+
 export const StatsChart = ({
   entries,
   stat,
@@ -31,18 +52,38 @@ export const StatsChart = ({
   selectedFactor = 0,
 }: StatsChartProps) => {
   const colorScheme = useColorScheme();
-  const { chartData, max, lineData } = getChartDataRange(
-    entries,
-    stat,
-    interval,
-    0,
-    selectedFactor,
-  );
+  const [chartState, setChartState] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const movingAverageLine = calculateMovingAverage(lineData);
+  useEffect(() => {
+    init();
+  }, [interval, entries]);
 
-  const ruleDivider = max < 30 ? 5 : 10;
-  const chartMax = Math.ceil(max / ruleDivider) * ruleDivider;
+  useEffect(() => {
+    if (chartState) {
+      const newChartData = updateChartDataWithFactorColor(
+        chartState.chartData,
+        selectedFactor,
+      );
+      setChartState({ ...chartState, chartData: newChartData });
+    }
+  }, [selectedFactor]);
+
+  const init = async () => {
+    setIsLoading(true);
+    const { chartData, max, lineData } = await asyncGetChartDataRange(
+      entries,
+      stat,
+      interval,
+      0,
+      selectedFactor,
+    );
+    setChartState({ chartData, max, lineData });
+    setIsLoading(false);
+  };
+
+  const ruleDivider = 5;
+  const chartMax = 10;
 
   return (
     <View
@@ -65,38 +106,55 @@ export const StatsChart = ({
           {label}
         </Text>
       </View>
-      <BarChart
-        data={chartData}
-        barBorderRadius={1}
-        stepHeight={ruleDivider === 10 ? 20 : 30}
-        barWidth={CHART_PROPS_BY_INTERVAL[interval].barWidth}
-        spacing={CHART_PROPS_BY_INTERVAL[interval].spacing}
-        frontColor={Colors[colorScheme].background}
-        xAxisThickness={0}
-        xAxisColor={Colors[colorScheme].secondary}
-        xAxisLabelTextStyle={{
-          color: showXLabel ? Colors[colorScheme].lightText : "transparent",
-          textAlign: "center",
-          overflow: "visible",
-        }}
-        xAxisLabelsHeight={20}
-        yAxisThickness={0}
-        yAxisTextStyle={{ color: "transparent" }}
-        hideYAxisText
-        hideRules
-        rulesColor={Colors[colorScheme].backgroundTint}
-        noOfSections={chartMax / ruleDivider}
-        maxValue={chartMax}
-        showLine
-        lineData={movingAverageLine}
-        lineConfig={{
-          curved: true,
-          color: Colors[colorScheme].lightText,
-          thickness: 3,
-          hideDataPoints: true,
-          initialSpacing: -1,
-        }}
-      />
+      {isLoading || !chartState ? (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: 88,
+          }}
+        >
+          <ActivityIndicator
+            size="small"
+            color={Colors[colorScheme].lightText}
+          />
+        </View>
+      ) : (
+        <BarChart
+          data={chartState.chartData}
+          barBorderRadius={1}
+          stepHeight={30}
+          barWidth={CHART_PROPS_BY_INTERVAL[interval].barWidth}
+          spacing={CHART_PROPS_BY_INTERVAL[interval].spacing}
+          frontColor={Colors[colorScheme].background}
+          xAxisThickness={0}
+          xAxisColor={Colors[colorScheme].secondary}
+          xAxisLabelTextStyle={{
+            color: showXLabel ? Colors[colorScheme].lightText : "transparent",
+            textAlign: "center",
+            overflow: "visible",
+          }}
+          xAxisLabelsHeight={20}
+          yAxisThickness={0}
+          yAxisTextStyle={{ color: "transparent" }}
+          hideYAxisText
+          hideRules
+          rulesColor={Colors[colorScheme].backgroundTint}
+          noOfSections={chartMax / ruleDivider}
+          maxValue={chartMax}
+          showLine
+          lineData={chartState.lineData}
+          lineConfig={{
+            curved: true,
+            color: Colors[colorScheme].lightText,
+            thickness: 3,
+            hideDataPoints: true,
+            initialSpacing: -1,
+          }}
+        />
+      )}
     </View>
   );
 };

@@ -5,14 +5,22 @@ export const CHART_PROPS_BY_INTERVAL = {
   [INTERVALS.WEEK]: {
     format: (date) => format(parseISO(date), "EEEEEE"),
     labelWidth: null,
-    barWidth: 28,
-    spacing: 12,
+    barWidth: 38,
+    spacing: 2,
   },
   [INTERVALS.MONTH]: {
-    format: (date, index) => (index % 7 === 0 ? format(date, "d") : null),
-    labelWidth: 16,
-    barWidth: 7,
-    spacing: 3,
+    format: (date) => {
+      const dayNum = format(date, "d");
+      if (dayNum === "1") {
+        return format(date, "MMM");
+      } else if (dayNum === "15") {
+        return dayNum;
+      }
+      return null;
+    },
+    labelWidth: 28,
+    barWidth: 8.6,
+    spacing: 1,
   },
   [INTERVALS.QUARTER]: {
     format: (date) => {
@@ -25,8 +33,8 @@ export const CHART_PROPS_BY_INTERVAL = {
       return null;
     },
     labelWidth: 28,
-    barWidth: 3,
-    spacing: 0.5,
+    barWidth: 3.2,
+    spacing: 0,
   },
   [INTERVALS.ALL]: {
     format: (date) => format(date, "d"),

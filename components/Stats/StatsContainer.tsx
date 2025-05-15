@@ -19,6 +19,7 @@ export const StatsContainer = () => {
   const [selectedInterval, setSelectedInterval] = useState<number>(
     INTERVALS.WEEK,
   );
+  const [selectedFactor, setSelectedFactor] = useState<number>(0);
   const colorScheme = useColorScheme();
   const { logEntries } = useStore();
 
@@ -27,26 +28,26 @@ export const StatsContainer = () => {
       icon: MOOD_ICON_MAP[10],
       label: "Mood",
       value: STATS_CORE.mood,
-      onPress: () => setSelectedStat(STATS_CORE.mood),
+      // onPress: () => setSelectedStat(STATS_CORE.mood),
     },
     {
       icon: BATTERY_ICON_MAP[8],
       label: "Energy",
       value: STATS_CORE.energy,
-      onPress: () => setSelectedStat(STATS_CORE.energy),
+      // onPress: () => setSelectedStat(STATS_CORE.energy),
     },
     {
       icon: ANXIETY_ICON_MAP[10],
       label: "Anxiety",
       value: STATS_CORE.anxiety,
-      onPress: () => setSelectedStat(STATS_CORE.anxiety),
+      // onPress: () => setSelectedStat(STATS_CORE.anxiety),
     },
-    {
-      icon: "arrow-up-bold-circle",
-      label: "Resists",
-      value: STATS_CORE.resists,
-      onPress: () => setSelectedStat(STATS_CORE.resists),
-    },
+    // {
+    //   icon: "arrow-up-bold-circle",
+    //   label: "Resists",
+    //   value: STATS_CORE.resists,
+    //   onPress: () => setSelectedStat(STATS_CORE.resists),
+    // },
   ];
 
   const intervalButtons = [
@@ -72,29 +73,34 @@ export const StatsContainer = () => {
     // },
   ];
 
+  const onLegendPress = (value: number) => {
+    setSelectedFactor(selectedFactor === value ? 0 : value);
+  };
+
   return (
     <View style={styles.contents}>
-      <View style={styles.buttonGroupContainer}>
-        <GroupButton
-          items={statButtons}
-          colors={Colors[colorScheme]}
-          selected={selectedStat}
-        />
-      </View>
-
-      <StatsChart
-        entries={logEntries}
-        stat={selectedStat}
-        interval={selectedInterval}
-      />
-      <StatsLegend colors={Colors[colorScheme]} />
-
       <View style={styles.buttonGroupContainer}>
         <GroupButton
           items={intervalButtons}
           colors={Colors[colorScheme]}
           selected={selectedInterval}
         />
+      </View>
+
+      {statButtons.map(({ icon, label, value }, index) => (
+        <StatsChart
+          entries={logEntries}
+          stat={value}
+          icon={icon}
+          label={label}
+          interval={selectedInterval}
+          showXLabel={index === statButtons.length - 1}
+          selectedFactor={selectedFactor}
+          key={value}
+        />
+      ))}
+      <View style={{ marginTop: 40 }}>
+        <StatsLegend colors={Colors[colorScheme]} onPress={onLegendPress} />
       </View>
     </View>
   );

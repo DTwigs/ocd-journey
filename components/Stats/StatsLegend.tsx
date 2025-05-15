@@ -1,9 +1,9 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 
-export const StatsLegend = ({ colors }) => {
+export const StatsLegend = ({ colors, onPress }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.legendItem}>
+      <Pressable onPress={() => onPress(2)} style={styles.legendItem}>
         <View
           style={{
             height: 12,
@@ -22,8 +22,8 @@ export const StatsLegend = ({ colors }) => {
         >
           Exercise
         </Text>
-      </View>
-      <View style={styles.legendItem}>
+      </Pressable>
+      <Pressable onPress={() => onPress(1)} style={styles.legendItem}>
         <View
           style={{
             height: 12,
@@ -42,7 +42,7 @@ export const StatsLegend = ({ colors }) => {
         >
           Mo. Cycle
         </Text>
-      </View>
+      </Pressable>
     </View>
   );
 };

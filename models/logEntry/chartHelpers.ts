@@ -15,7 +15,6 @@ type LineDatum = { value: number; dateKey: string };
 
 type GetChartDataRangeReturnType = {
   chartData: ChartDatum<number>[];
-  max: number;
   lineData: LineDatum[];
 };
 
@@ -31,14 +30,12 @@ export const getChartDataRange = (
     endIndex = startIndex + numberOfRecords - 1;
   }
 
-  const minMaxArray = [];
   const lineData = [];
   const chartData = [];
   for (let i = endIndex; i >= startIndex; i--) {
     const dateKey = formatDateKey(subDays(new Date(), i));
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
-    minMaxArray.push(value);
 
     let frontColor;
     if (factorNumToShow > 0) {
@@ -62,8 +59,16 @@ export const getChartDataRange = (
     });
   }
 
-  return { chartData, max: Math.max(...minMaxArray), lineData };
+  return { chartData, lineData };
 };
+
+export async function asyncGetChartDataRange(...props) {
+  return new Promise((resolve) => {
+    const result = getChartDataRange.apply(this, props);
+    const movingAverageLine = calculateMovingAverage(result.lineData);
+    setTimeout(() => resolve({ ...result, lineData: movingAverageLine }), 0);
+  });
+}
 
 // Three day moving average
 export const calculateMovingAverage = (arr: LineDatum[]): LineDatum[] => {

@@ -10,11 +10,8 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { logEntryModel } from "@/models/logEntry";
 import type { LogEntries, LogEntryCoreStatName } from "@/models/logEntry/type";
 
-const {
-  getChartDataRange,
-  calculateMovingAverage,
-  updateChartDataWithFactorColor,
-} = logEntryModel;
+const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
+  logEntryModel;
 
 type StatsChartProps = {
   entries: LogEntries;
@@ -25,22 +22,6 @@ type StatsChartProps = {
   showXLabel?: boolean;
   selectedFactor?: number;
 };
-
-async function asyncGetChartDataRange(...props) {
-  const SLEEP_TIME_MAP = {
-    [INTERVALS.WEEK]: 500,
-    [INTERVALS.MONTH]: 700,
-    [INTERVALS.QUARTER]: 1000,
-  };
-  return new Promise((resolve) => {
-    const result = getChartDataRange.apply(this, props);
-    const movingAverageLine = calculateMovingAverage(result.lineData);
-    setTimeout(
-      () => resolve({ ...result, lineData: movingAverageLine }),
-      SLEEP_TIME_MAP[props.interval],
-    );
-  });
-}
 
 export const StatsChart = ({
   entries,
@@ -71,19 +52,19 @@ export const StatsChart = ({
 
   const init = async () => {
     setIsLoading(true);
-    const { chartData, max, lineData } = await asyncGetChartDataRange(
+    const { chartData, lineData } = await asyncGetChartDataRange(
       entries,
       stat,
       interval,
       0,
       selectedFactor,
     );
-    setChartState({ chartData, max, lineData });
+    setChartState({ chartData, lineData });
     setIsLoading(false);
   };
 
-  const ruleDivider = 5;
-  const chartMax = 10;
+  const RULE_DIVIDER = 5;
+  const CHART_MAX = 10;
 
   return (
     <View
@@ -142,8 +123,8 @@ export const StatsChart = ({
           hideYAxisText
           hideRules
           rulesColor={Colors[colorScheme].backgroundTint}
-          noOfSections={chartMax / ruleDivider}
-          maxValue={chartMax}
+          noOfSections={CHART_MAX / RULE_DIVIDER}
+          maxValue={CHART_MAX}
           showLine
           lineData={chartState.lineData}
           lineConfig={{

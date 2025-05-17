@@ -23,6 +23,8 @@
 import React from "react";
 import { StyleSheet, View, PanResponder, Animated, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 type CustomSliderProps = {
   name?: string;
@@ -43,6 +45,7 @@ export const CustomSlider = ({
   colorHighlight = "#008ee6",
   setValue,
 }: CustomSliderProps) => {
+  const colorScheme = useColorScheme();
   // ----------------- Slider ----------------------- //
   const pan = React.useRef(new Animated.ValueXY()).current;
 
@@ -155,11 +158,17 @@ export const CustomSlider = ({
             )
           }
         >
-          <View style={s.lineContainer}>
+          <View
+            style={[
+              s.lineContainer,
+              { backgroundColor: Colors[colorScheme].lightText },
+            ]}
+          >
             <Animated.View
               style={[
                 s.line,
                 [
+                  { backgroundColor: Colors[colorScheme].lightText },
                   {
                     translateX: pan.x.interpolate({
                       inputRange: [
@@ -223,7 +232,9 @@ export const CustomSlider = ({
           <View style={[s.boundary, { left: 0 }]} />
         </View>
         <View style={s.labelValue}>
-          <Text style={s.labelValueText}>{animState.displayMinVal}</Text>
+          <Text style={[s.labelValueText, { color: Colors[colorScheme].text }]}>
+            {animState.displayMinVal}
+          </Text>
         </View>
       </View>
     </View>

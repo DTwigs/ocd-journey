@@ -71,5 +71,6 @@ const styles = StyleSheet.create({
   lastButton: {
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
+    borderRightWidth: 0,
   },
 });

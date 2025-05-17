@@ -9,7 +9,7 @@ const PERIOD_LENGTH = 7;
 
 let periodCounter = 0;
 
-for (let i = 110; i > 0; i--) {
+for (let i = 110; i > 5; i--) {
   if (periodCounter > 28) {
     periodCounter = 0;
   }

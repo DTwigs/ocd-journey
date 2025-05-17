@@ -6,6 +6,8 @@ import { uiError } from "@/utils/logger";
 import { mockLogEntries } from "@/mockData/mockLogEntries";
 import type State from "@/models/state/type";
 
+const { fillMissingLogs } = logEntryModel;
+
 const initialState = {
   ...logEntryModel.initialState,
 };
@@ -36,14 +38,14 @@ export const StoreProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = async () => {
-    await db.removeLogEntriesData();
+    // await db.removeLogEntriesData();
     // use mockData
-    const logEntries = mockLogEntries;
-    // const logEntries = await db.getLogEntries();
+    // const logEntries = mockLogEntries;
+    const logEntries = await db.getLogEntries();
 
     dispatch({
       type: stateModel.SET_STATE,
-      value: { logEntries: new Map(logEntries) },
+      value: { logEntries: fillMissingLogs(logEntries) },
     });
   };
 

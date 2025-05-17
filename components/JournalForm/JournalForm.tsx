@@ -16,23 +16,30 @@ import { useStore } from "@/hooks/useStore";
 import { logEntryModel } from "@/models/logEntry";
 import type { LogEntryStats } from "@/models/logEntry/type";
 
+const { formatDateKey } = logEntryModel;
+
 export const JournalForm = () => {
   const router = useRouter();
-  const { dispatch } = useStore();
+  const { logEntries, dispatch } = useStore();
   const colorScheme = useColorScheme();
-  const [logEntryStats, setLogEntryStats] = useState<LogEntryStats>({
-    mood: 5,
-    energy: 5,
-    anxiety: 5,
-    exercise: false,
-    monthlyCycle: false,
+
+  // prefill journal values if journal entry already exists
+  const today = formatDateKey(new Date());
+  const todaysLog = logEntries?.get(today);
+
+  const [entryStats, setEntryStats] = useState<LogEntryStats>({
+    mood: todaysLog?.mood ?? 5,
+    energy: todaysLog?.energy ?? 5,
+    anxiety: todaysLog?.anxiety ?? 5,
+    exercise: todaysLog?.exercise ?? false,
+    monthlyCycle: todaysLog?.period ?? false,
   });
 
   const setStat = (statKey: string) => (value: number | boolean) =>
-    setLogEntryStats((prevState) => ({ ...prevState, [statKey]: value }));
+    setEntryStats((prevState) => ({ ...prevState, [statKey]: value }));
 
   const onPress = () => {
-    dispatch({ type: logEntryModel.SAVE_LOG, value: logEntryStats });
+    dispatch({ type: logEntryModel.SAVE_LOG, value: entryStats });
     router.navigate("/(tabs)/stats");
   };
 
@@ -40,33 +47,33 @@ export const JournalForm = () => {
     <View style={[styles.contents]}>
       <CustomSlider
         name="Mood"
-        icon={MOOD_ICON_MAP[logEntryStats.mood]}
-        initVal={logEntryStats.mood}
+        icon={MOOD_ICON_MAP[entryStats.mood]}
+        initVal={entryStats.mood}
         setValue={setStat("mood")}
-        colorHighlight={Colors[colorScheme].text}
+        colorHighlight={Colors.light.text}
       />
       <CustomSlider
         name="Energy"
-        icon={BATTERY_ICON_MAP[logEntryStats.energy]}
-        initVal={logEntryStats.energy}
+        icon={BATTERY_ICON_MAP[entryStats.energy]}
+        initVal={entryStats.energy}
         setValue={setStat("energy")}
-        colorHighlight={Colors[colorScheme].text}
+        colorHighlight={Colors.light.text}
       />
       <CustomSlider
         name="Anxiety"
-        icon={ANXIETY_ICON_MAP[logEntryStats.anxiety]}
-        initVal={logEntryStats.anxiety}
+        icon={ANXIETY_ICON_MAP[entryStats.anxiety]}
+        initVal={entryStats.anxiety}
         setValue={setStat("anxiety")}
-        colorHighlight={Colors[colorScheme].text}
+        colorHighlight={Colors.light.text}
       />
       <CustomCheckbox
         text="Exercise?"
-        value={logEntryStats.exercise}
+        value={entryStats.exercise}
         setValue={setStat("exercise")}
       />
       <CustomCheckbox
         text="Monthly Cycle?"
-        value={logEntryStats.period}
+        value={entryStats.period}
         setValue={setStat("period")}
       />
       <View style={styles.submitButtonContainer}>

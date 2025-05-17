@@ -63,6 +63,7 @@ export const addStatsToTodaysLog = (
 
 // If the user hasnt been in the app in a while there will be blank days
 // that needed to be added in to the array of LogEntries
+// Does not add an empty entry for Today's date.
 export const fillMissingLogs = (entries: LogEntries): LogEntries => {
   const filledEntries = new Map(entries);
   const lastEntry: LogEntry = getLastEntry(filledEntries);

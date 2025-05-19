@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { useRouter, Tabs } from "expo-router";
 import React from "react";
 import { Platform, Pressable, StyleSheet } from "react-native";
 
@@ -11,6 +11,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -18,7 +19,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].text,
         headerRight: () => (
           <Pressable
-            onPress={() => alert("This is a button!")}
+            onPress={() => router.navigate("/settings")}
             style={styles.headerRight}
           >
             <MaterialCommunityIcons

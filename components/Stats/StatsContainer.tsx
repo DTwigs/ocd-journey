@@ -20,7 +20,7 @@ export const StatsContainer = () => {
   );
   const [selectedFactor, setSelectedFactor] = useState<number>(0);
   const colorScheme = useColorScheme();
-  const { logEntries } = useStore();
+  const { logEntries, settings } = useStore();
 
   const statButtons = [
     {
@@ -99,7 +99,11 @@ export const StatsContainer = () => {
         />
       ))}
       <View style={{ marginTop: 40 }}>
-        <StatsLegend colors={Colors[colorScheme]} onPress={onLegendPress} />
+        <StatsLegend
+          factors={settings.factors}
+          colors={Colors[colorScheme]}
+          onPress={onLegendPress}
+        />
       </View>
     </View>
   );

@@ -20,8 +20,9 @@ const { formatDateKey } = logEntryModel;
 
 export const JournalForm = () => {
   const router = useRouter();
-  const { logEntries, dispatch } = useStore();
+  const { logEntries, settings, dispatch } = useStore();
   const colorScheme = useColorScheme();
+  const { factors } = settings;
 
   // prefill journal values if journal entry already exists
   const today = formatDateKey(new Date());
@@ -31,8 +32,8 @@ export const JournalForm = () => {
     mood: todaysLog?.mood ?? 5,
     energy: todaysLog?.energy ?? 5,
     anxiety: todaysLog?.anxiety ?? 5,
-    exercise: todaysLog?.exercise ?? false,
-    monthlyCycle: todaysLog?.period ?? false,
+    factor1: todaysLog?.factor1 ?? false,
+    factor2: todaysLog?.factor2 ?? false,
   });
 
   const setStat = (statKey: string) => (value: number | boolean) =>
@@ -67,14 +68,14 @@ export const JournalForm = () => {
         colorHighlight={Colors.light.text}
       />
       <CustomCheckbox
-        text="Exercise?"
-        value={entryStats.exercise}
-        setValue={setStat("exercise")}
+        text={`${factors.factor1.name}?`}
+        value={entryStats.factor1}
+        setValue={setStat("factor1")}
       />
       <CustomCheckbox
-        text="Monthly Cycle?"
-        value={entryStats.period}
-        setValue={setStat("period")}
+        text={`${factors.factor2.name}?`}
+        value={entryStats.factor2}
+        setValue={setStat("factor2")}
       />
       <View style={styles.submitButtonContainer}>
         <Pressable onPress={onPress}>

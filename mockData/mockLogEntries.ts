@@ -7,13 +7,13 @@ const mockData = new Map();
 
 const PERIOD_LENGTH = 7;
 
-let periodCounter = 0;
+let fac2Counter = 0;
 
 for (let i = 110; i > 5; i--) {
-  if (periodCounter > 28) {
-    periodCounter = 0;
+  if (fac2Counter > 28) {
+    fac2Counter = 0;
   }
-  periodCounter++;
+  fac2Counter++;
   mockData.set(
     formatDateKey(subDays(new Date(), i)),
     makeStats({
@@ -21,8 +21,8 @@ for (let i = 110; i > 5; i--) {
       mood: Math.floor(Math.random() * 10),
       energy: Math.floor(Math.random() * 10),
       anxiety: Math.floor(Math.random() * 10),
-      exercise: Math.random() < 0.5,
-      period: periodCounter < PERIOD_LENGTH,
+      factor1: Math.random() < 0.5,
+      factor2: fac2Counter < PERIOD_LENGTH,
     }),
   );
 }

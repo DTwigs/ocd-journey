@@ -1,37 +1,27 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
+import type { Factors } from "@/model/settings/type";
 
-export const StatsLegend = ({ colors, onPress }) => {
+type StatsLegendPropsType = {
+  factors: Factors;
+  colors: any;
+  onPress: (val: number) => void;
+};
+
+export const StatsLegend = ({
+  factors,
+  colors,
+  onPress,
+}: StatsLegendPropsType) => {
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => onPress(2)} style={styles.legendItem}>
-        <View
-          style={{
-            height: 12,
-            width: 12,
-            borderRadius: 6,
-            backgroundColor: colors.tertiary,
-            marginRight: 6,
-          }}
-        />
-        <Text
-          style={{
-            // width: 60,
-            height: 16,
-            color: colors.lightText,
-          }}
-        >
-          Exercise
-        </Text>
-      </Pressable>
       <Pressable onPress={() => onPress(1)} style={styles.legendItem}>
         <View
-          style={{
-            height: 12,
-            width: 12,
-            borderRadius: 6,
-            backgroundColor: colors.secondary,
-            marginRight: 6,
-          }}
+          style={[
+            styles.legendPill,
+            {
+              backgroundColor: colors.tertiary,
+            },
+          ]}
         />
         <Text
           style={{
@@ -40,7 +30,26 @@ export const StatsLegend = ({ colors, onPress }) => {
             color: colors.lightText,
           }}
         >
-          Mo. Cycle
+          {factors.factor1.name}
+        </Text>
+      </Pressable>
+      <Pressable onPress={() => onPress(2)} style={styles.legendItem}>
+        <View
+          style={[
+            styles.legendPill,
+            {
+              backgroundColor: colors.secondary,
+            },
+          ]}
+        />
+        <Text
+          style={{
+            // width: 60,
+            height: 16,
+            color: colors.lightText,
+          }}
+        >
+          {factors.factor2.name}
         </Text>
       </Pressable>
     </View>
@@ -49,14 +58,18 @@ export const StatsLegend = ({ colors, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 18,
-    // marginTop: 24,
   },
   legendItem: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  legendPill: {
+    height: 12,
+    width: 12,
+    borderRadius: 6,
+    marginRight: 6,
   },
 });

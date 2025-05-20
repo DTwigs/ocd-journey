@@ -1,6 +1,7 @@
 import { createContext, useReducer } from "react";
 import { logEntryModel } from "@/models/logEntry";
 import { stateModel } from "@/models/state";
+import { settingsModel } from "@/models/settings";
 import * as db from "@/db";
 import { uiError } from "@/utils/logger";
 import { mockLogEntries } from "@/mockData/mockLogEntries";
@@ -10,6 +11,7 @@ const { fillMissingLogs } = logEntryModel;
 
 const initialState = {
   ...logEntryModel.initialState,
+  ...settingsModel.initialState,
 };
 
 export const StoreContext = createContext(initialState);
@@ -18,6 +20,7 @@ export const StoreContext = createContext(initialState);
 const Reducers = {
   ...stateModel.reducers,
   ...logEntryModel.reducers,
+  ...settingsModel.reducers,
 };
 
 type Action = { type: string } | { type: string; value: State };
@@ -42,10 +45,14 @@ export const StoreProvider = (props) => {
     // use mockData
     // const logEntries = mockLogEntries;
     const logEntries = await db.getLogEntries();
+    const settings = await db.getSettings();
 
     dispatch({
       type: stateModel.SET_STATE,
-      value: { logEntries: fillMissingLogs(logEntries) },
+      value: {
+        logEntries: fillMissingLogs(logEntries),
+        settings: settings ?? initialState.settings,
+      },
     });
   };
 

@@ -3,15 +3,13 @@ export type LogEntryStats = {
   mood?: number;
   energy?: number;
   anxiety?: number;
-  exercise?: boolean;
-  monthlyCycle?: boolean;
+  factor1?: boolean;
+  factor2?: boolean;
 };
 
 export type LogEntries = Map<string, LogEntryStats>;
 
-export type LogEntryCoreStatName = "mood" | "energy" | "anxiety" | "resists";
-
-export type LogEntryStatName = LogEntryCoreStatName | "exercise" | "period";
+export type LogEntryStatName = "mood" | "energy" | "anxiety" | "resists";
 
 export type ChartDatum<T> = {
   label: string;

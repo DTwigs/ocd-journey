@@ -8,14 +8,14 @@ import { INTERVALS } from "@/constants/Dates";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { logEntryModel } from "@/models/logEntry";
-import type { LogEntries, LogEntryCoreStatName } from "@/models/logEntry/type";
+import type { LogEntries, LogEntryStatName } from "@/models/logEntry/type";
 
 const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
   logEntryModel;
 
 type StatsChartProps = {
   entries: LogEntries;
-  stat: LogEntryCoreStatName;
+  stat: LogEntryStatName;
   interval: (typeof INTERVALS)[Keys];
   icon: string;
   label: string;

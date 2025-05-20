@@ -3,12 +3,12 @@ import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
 import { tertiary, secondary } from "@/constants/Colors";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
-import type { ChartDatum, LogEntries, LogEntryCoreStatName } from "./type";
+import type { ChartDatum, LogEntries, LogEntryStatName } from "./type";
 
 const BORDER_RADIUS = 1;
 const FACTOR_MAP = {
-  1: { name: "period", color: secondary },
-  2: { name: "exercise", color: tertiary },
+  1: { name: "factor1", color: tertiary },
+  2: { name: "factor2", color: secondary },
 };
 
 type LineDatum = { value: number; dateKey: string };
@@ -20,7 +20,7 @@ type GetChartDataRangeReturnType = {
 
 export const getChartDataRange = (
   entries: LogEntries,
-  statName: LogEntryCoreStatName,
+  statName: LogEntryStatName,
   numberOfRecords: number = INTERVALS.WEEK,
   startIndex: number = 0,
   factorNumToShow: number = 0, // define which factor to show colors for on the chart
@@ -49,8 +49,8 @@ export const getChartDataRange = (
       label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, i),
       value,
       frontColor,
-      factor1: entry?.period,
-      factor2: entry?.exercise,
+      factor2: entry?.factor2,
+      factor1: entry?.factor1,
       barBorderTopLeftRadius: BORDER_RADIUS,
       barBorderTopRightRadius: BORDER_RADIUS,
       barBorderBottomLeftRadius: 0,

@@ -10,7 +10,7 @@ export const tertiary = "#448FDA";
 const tintColorLight = primary;
 const tintColorDark = "#EFE9E7";
 
-export const Colors = {
+export const Colors: { [key: string]: any } = {
   light: {
     text: "#232130",
     lightText: "#353249",

@@ -1,15 +1,14 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef } from "react";
-import { AppState, Pressable, StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AppState } from "react-native";
+import type { AppStateStatus } from "react-native";
 import "react-native-reanimated";
+import { parseISO, isSameDay } from "date-fns";
 
 import * as db from "@/db";
 import { useStore } from "@/hooks/useStore";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,23 +16,21 @@ SplashScreen.preventAutoHideAsync();
 export default function Root() {
   const store = useStore();
   const appState = useRef(AppState.currentState);
-  const colorScheme = useColorScheme();
-  const router = useRouter();
 
   useEffect(() => {
-    AppState.addEventListener("change", onAppStateChange);
+    const subscription = AppState.addEventListener("change", onAppStateChange);
     (async () => {
       store.init();
     })();
 
     return () => {
-      if (AppState && AppState.removeEventListener) {
-        AppState.removeEventListener("change", onAppStateChange);
+      if (subscription) {
+        subscription.remove();
       }
     };
   }, []);
 
-  const onAppStateChange = (nextAppState: string) => {
+  const onAppStateChange = (nextAppState: AppStateStatus) => {
     const backgroundToForeground =
       appState.current.match(/inactive|background/) &&
       nextAppState === "active";
@@ -69,29 +66,7 @@ export default function Root() {
         <Stack.Screen
           name="settings"
           options={{
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: Colors[colorScheme ?? "light"].background,
-              elevation: 0,
-              shadowOpacity: 0,
-              borderBottomWidth: 0,
-            },
-            headerTitleStyle: {
-              fontFamily: "LcdPhone",
-              fontSize: 20,
-            },
-            headerLeft: () => (
-              <Pressable
-                onPress={() => router.back()}
-                style={styles.headerLeft}
-              >
-                <MaterialCommunityIcons
-                  size={28}
-                  name="home"
-                  color={Colors[colorScheme ?? "light"].text}
-                />
-              </Pressable>
-            ),
+            headerShown: false,
           }}
         />
         <Stack.Screen name="+not-found" />
@@ -100,9 +75,3 @@ export default function Root() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  headerLeft: {
-    marginRight: 25,
-  },
-});

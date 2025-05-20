@@ -1,11 +1,16 @@
-export type LogEntryStats = {
-  resists?: number;
+export type LogEntryJournalStats = {
   mood?: number;
   energy?: number;
   anxiety?: number;
+};
+
+export type LogEntryFactors = {
   factor1?: boolean;
   factor2?: boolean;
 };
+
+export type LogEntryStats = LogEntryJournalStats &
+  LogEntryFactors & { resists?: number };
 
 export type LogEntries = Map<string, LogEntryStats>;
 

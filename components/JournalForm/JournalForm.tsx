@@ -14,9 +14,18 @@ import {
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useStore } from "@/hooks/useStore";
 import { logEntryModel } from "@/models/logEntry";
-import type { LogEntryStats } from "@/models/logEntry/type";
+import type {
+  LogEntryJournalStats,
+  LogEntryFactors,
+} from "@/models/logEntry/type";
 
 const { formatDateKey } = logEntryModel;
+
+type LogEntryStatsRequired = {
+  [P in keyof Required<LogEntryJournalStats>]: number;
+} & {
+  [K in keyof Required<LogEntryFactors>]: boolean;
+};
 
 export const JournalForm = () => {
   const router = useRouter();
@@ -28,7 +37,7 @@ export const JournalForm = () => {
   const today = formatDateKey(new Date());
   const todaysLog = logEntries?.get(today);
 
-  const [entryStats, setEntryStats] = useState<LogEntryStats>({
+  const [entryStats, setEntryStats] = useState<LogEntryStatsRequired>({
     mood: todaysLog?.mood ?? 5,
     energy: todaysLog?.energy ?? 5,
     anxiety: todaysLog?.anxiety ?? 5,
@@ -82,7 +91,7 @@ export const JournalForm = () => {
           <MaterialCommunityIcons
             size={96}
             name="check-circle"
-            color={Colors[colorScheme].text}
+            color={Colors[colorScheme ?? "light"].text}
           />
         </Pressable>
       </View>

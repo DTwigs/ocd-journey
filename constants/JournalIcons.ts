@@ -1,4 +1,8 @@
-export const MOOD_ICON_MAP = {
+type IconMap = {
+  [key: number]: string;
+};
+
+export const MOOD_ICON_MAP: IconMap = {
   0: "emoticon-frown",
   1: "emoticon-sad",
   2: "emoticon-sad",
@@ -12,7 +16,7 @@ export const MOOD_ICON_MAP = {
   10: "emoticon-excited",
 };
 
-export const BATTERY_ICON_MAP = {
+export const BATTERY_ICON_MAP: IconMap = {
   0: "battery-10",
   1: "battery-10",
   2: "battery-20",
@@ -26,7 +30,7 @@ export const BATTERY_ICON_MAP = {
   10: "battery",
 };
 
-export const ANXIETY_ICON_MAP = {
+export const ANXIETY_ICON_MAP: IconMap = {
   0: "weather-sunny",
   1: "weather-partly-cloudy",
   2: "weather-partly-cloudy",

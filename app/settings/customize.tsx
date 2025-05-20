@@ -1,9 +1,8 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Collapsible } from "@/components/Collapsible";
 
-export default function Settings() {
+export default function Customization() {
   const colorScheme = useColorScheme();
 
   return (
@@ -13,9 +12,7 @@ export default function Settings() {
         { backgroundColor: Colors[colorScheme].background },
       ]}
     >
-      <Collapsible title="Feedback">
-        <Text> settings</Text>
-      </Collapsible>
+      <Text>Customization screen</Text>
     </View>
   );
 }

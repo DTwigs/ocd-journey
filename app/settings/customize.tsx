@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import FactorsForm from "@/components/FactorsForm";
 
 export default function Customization() {
   const colorScheme = useColorScheme();
@@ -9,10 +10,10 @@ export default function Customization() {
     <View
       style={[
         styles.container,
-        { backgroundColor: Colors[colorScheme].background },
+        { backgroundColor: Colors[colorScheme ?? "light"].background },
       ]}
     >
-      <Text>Customization screen</Text>
+      <FactorsForm />
     </View>
   );
 }

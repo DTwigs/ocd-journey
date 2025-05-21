@@ -4,7 +4,7 @@ import type { State } from "../state/type";
 import * as db from "@/db";
 import type { LogEntryStats } from "./type";
 
-export const initialState: State = {
+export const initialState = {
   logEntries: new Map<string, LogEntryStats>(),
 };
 

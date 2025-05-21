@@ -3,8 +3,8 @@ import { format, parseISO } from "date-fns";
 
 type ChartPropsByIntervalType = {
   [key: number]: {
-    format: (date: string) => string | null;
-    labelWidth: number | null;
+    format: (date: string) => string | undefined;
+    labelWidth: number | undefined;
     barWidth: number;
     spacing: number;
   };
@@ -13,7 +13,7 @@ type ChartPropsByIntervalType = {
 export const CHART_PROPS_BY_INTERVAL: ChartPropsByIntervalType = {
   [INTERVALS.WEEK]: {
     format: (date: string) => format(parseISO(date), "EEEEEE"),
-    labelWidth: null,
+    labelWidth: undefined,
     barWidth: 38,
     spacing: 2,
   },
@@ -25,7 +25,7 @@ export const CHART_PROPS_BY_INTERVAL: ChartPropsByIntervalType = {
       } else if (dayNum === "15") {
         return dayNum;
       }
-      return null;
+      return undefined;
     },
     labelWidth: 28,
     barWidth: 8.6,
@@ -39,7 +39,7 @@ export const CHART_PROPS_BY_INTERVAL: ChartPropsByIntervalType = {
       } else if (dayNum === "15") {
         return dayNum;
       }
-      return null;
+      return undefined;
     },
     labelWidth: 28,
     barWidth: 3.2,

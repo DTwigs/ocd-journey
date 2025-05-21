@@ -1,32 +1,23 @@
+import type { barDataItem } from "react-native-gifted-charts";
+
 export type LogEntryJournalStats = {
-  mood?: number;
-  energy?: number;
-  anxiety?: number;
+  mood?: number | null;
+  energy?: number | null;
+  anxiety?: number | null;
 };
 
 export type LogEntryFactors = {
-  factor1?: boolean;
-  factor2?: boolean;
+  factor1?: boolean | undefined;
+  factor2?: boolean | undefined;
 };
 
 export type LogEntryStats = LogEntryJournalStats &
-  LogEntryFactors & { resists?: number };
+  LogEntryFactors & { resists?: number | null };
 
 export type LogEntries = Map<string, LogEntryStats>;
 
 export type LogEntryStatName = "mood" | "energy" | "anxiety" | "resists";
 
-export type ChartDatum<T> = {
-  label: string | null;
-  value: T;
-  frontColor: string | null;
-  labelWidth: number | null;
-  factor2?: boolean;
-  factor1?: boolean;
-  barBorderTopLeftRadius: number;
-  barBorderTopRightRadius: number;
-  barBorderBottomLeftRadius: number;
-  barBorderBottomRightRadius: number;
-};
-
 export type LineDatum = { value: number; dateKey: string };
+
+export type ChartDatum = barDataItem & LogEntryFactors;

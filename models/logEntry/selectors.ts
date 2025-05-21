@@ -1,7 +1,7 @@
 import { differenceInCalendarDays, subDays, format } from "date-fns";
 import { KEY_DATE_FORMAT } from "@/constants/Dates";
 import { makeStats } from "./creation";
-import type { LogEntry, LogEntryStats } from "./type";
+import type { LogEntries, LogEntryStats } from "./type";
 
 export const formatDateKey = (date: Date): string =>
   format(date, KEY_DATE_FORMAT);
@@ -14,17 +14,20 @@ export const hasTodaysLog = (entries: LogEntries): boolean => {
 // return [date, LogEntryStats] as an array
 export const getLastEntry = (
   entries: LogEntries,
-): Array<string | LogEntryStats> => Array.from(entries).pop();
+): [string, LogEntryStats] | undefined => Array.from(entries).pop();
 
 export const addResistToTodaysLog = (entries: LogEntries): LogEntries => {
   const today = formatDateKey(new Date());
   let updatedEntries = new Map<string, LogEntryStats>(entries);
 
   if (updatedEntries.has(today)) {
-    const todaysEntry: LogEntryStats = updatedEntries.get(today);
+    const todaysEntry: LogEntryStats | undefined = updatedEntries.get(today);
     updatedEntries.set(today, {
       ...todaysEntry,
-      resists: todaysEntry.resists >= 0 ? todaysEntry.resists + 1 : 1,
+      resists:
+        todaysEntry?.resists && todaysEntry.resists >= 0
+          ? todaysEntry.resists + 1
+          : 1,
     });
   } else {
     updatedEntries = fillMissingLogs(updatedEntries);
@@ -42,7 +45,7 @@ export const addStatsToTodaysLog = (
   const today = formatDateKey(new Date());
 
   if (updatedEntries.has(today)) {
-    const todaysEntry: LogEntryStats = updatedEntries.get(today);
+    const todaysEntry: LogEntryStats | undefined = updatedEntries.get(today);
     updatedEntries.set(today, {
       ...todaysEntry,
       ...stats,
@@ -66,7 +69,8 @@ export const addStatsToTodaysLog = (
 // Does not add an empty entry for Today's date.
 export const fillMissingLogs = (entries: LogEntries): LogEntries => {
   const filledEntries = new Map(entries);
-  const lastEntry: LogEntry = getLastEntry(filledEntries);
+  const lastEntry: [string, LogEntryStats] | undefined =
+    getLastEntry(filledEntries);
 
   if (!lastEntry) {
     return filledEntries;

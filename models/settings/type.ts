@@ -6,3 +6,7 @@ export type Factors = {
     name: string;
   };
 };
+
+export type Settings = {
+  factors: Factors;
+};

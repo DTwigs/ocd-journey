@@ -1,4 +1,5 @@
 import { subDays } from "date-fns";
+import type { ColorValue } from "react-native";
 import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
 import { tertiary, secondary } from "@/constants/Colors";
@@ -11,7 +12,7 @@ import type {
 } from "./type";
 
 type FactorMapType = {
-  [key: number]: { name: keyof LogEntryFactors; color: string };
+  [key: number]: { name: keyof LogEntryFactors; color: ColorValue };
 };
 
 const BORDER_RADIUS = 1;
@@ -23,7 +24,7 @@ const FACTOR_MAP: FactorMapType = {
 type LineDatum = { value: number; dateKey: string };
 
 type GetChartDataRangeReturnType = {
-  chartData: ChartDatum<number>[];
+  chartData: ChartDatum[];
   lineData: LineDatum[];
 };
 
@@ -46,10 +47,10 @@ export const getChartDataRange = (
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
 
-    let frontColor = null;
+    let frontColor;
     if (factorNumToShow > 0) {
       const { name, color } = FACTOR_MAP[factorNumToShow];
-      frontColor = entry?.[name] ? color : null;
+      frontColor = entry?.[name] ? color : undefined;
     }
 
     lineData.push({ value, dateKey });
@@ -105,15 +106,15 @@ export const calculateMovingAverage = (arr: LineDatum[]): LineDatum[] => {
 // we don't want to recalculate the entire array when we change
 // factor color.
 export const updateChartDataWithFactorColor = (
-  chartData: ChartDatum<number>[],
+  chartData: ChartDatum[],
   factorNumToShow: number,
-) => {
-  return chartData.map((datum: ChartDatum<number>) => {
+): ChartDatum[] => {
+  return chartData.map((datum: ChartDatum) => {
     let frontColor;
     if (factorNumToShow > 0) {
       const { color } = FACTOR_MAP[factorNumToShow];
       const value = [null, datum.factor1, datum.factor2][factorNumToShow];
-      frontColor = value ? color : null;
+      frontColor = value ? color : undefined;
     }
     return {
       ...datum,

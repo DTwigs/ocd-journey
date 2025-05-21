@@ -6,9 +6,9 @@ import { AppState } from "react-native";
 import type { AppStateStatus } from "react-native";
 import "react-native-reanimated";
 import { parseISO, isSameDay } from "date-fns";
-
 import * as db from "@/db";
 import { useStore } from "@/hooks/useStore";
+import ToastWrapper from "./ToastWrapper";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -72,6 +72,7 @@ export default function Root() {
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <ToastWrapper />
     </>
   );
 }

@@ -3,7 +3,7 @@ import type { State } from "../state/type";
 import * as db from "@/db";
 import type { Factors } from "./type";
 
-export const initialState: State = {
+export const initialState = {
   settings: {
     factors: {
       factor1: { name: "Exercise" },

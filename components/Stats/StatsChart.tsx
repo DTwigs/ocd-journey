@@ -31,7 +31,7 @@ type StatsChartProps = {
 };
 
 type ChartState = {
-  chartData: ChartDatum<number>[];
+  chartData: ChartDatum[];
   lineData: LineDatum[];
 } | null;
 

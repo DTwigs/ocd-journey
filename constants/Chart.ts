@@ -1,15 +1,24 @@
 import { INTERVALS } from "./Dates";
 import { format, parseISO } from "date-fns";
 
-export const CHART_PROPS_BY_INTERVAL = {
+type ChartPropsByIntervalType = {
+  [key: number]: {
+    format: (date: string) => string | null;
+    labelWidth: number | null;
+    barWidth: number;
+    spacing: number;
+  };
+};
+
+export const CHART_PROPS_BY_INTERVAL: ChartPropsByIntervalType = {
   [INTERVALS.WEEK]: {
-    format: (date) => format(parseISO(date), "EEEEEE"),
+    format: (date: string) => format(parseISO(date), "EEEEEE"),
     labelWidth: null,
     barWidth: 38,
     spacing: 2,
   },
   [INTERVALS.MONTH]: {
-    format: (date) => {
+    format: (date: string) => {
       const dayNum = format(date, "d");
       if (dayNum === "1") {
         return format(date, "MMM");
@@ -23,7 +32,7 @@ export const CHART_PROPS_BY_INTERVAL = {
     spacing: 1,
   },
   [INTERVALS.QUARTER]: {
-    format: (date) => {
+    format: (date: string) => {
       const dayNum = format(date, "d");
       if (dayNum === "1") {
         return format(date, "MMM");
@@ -37,7 +46,7 @@ export const CHART_PROPS_BY_INTERVAL = {
     spacing: 0,
   },
   [INTERVALS.ALL]: {
-    format: (date) => format(date, "d"),
+    format: (date: string) => format(date, "d"),
     labelWidth: 28,
     barWidth: 16,
     spacing: 12,

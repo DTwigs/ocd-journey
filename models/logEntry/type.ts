@@ -17,10 +17,16 @@ export type LogEntries = Map<string, LogEntryStats>;
 export type LogEntryStatName = "mood" | "energy" | "anxiety" | "resists";
 
 export type ChartDatum<T> = {
-  label: string;
+  label: string | null;
   value: T;
-  frontColor?: string;
-  spacing?: number;
-  labelWidth?: number;
-  labelTextStyle?: number;
+  frontColor: string | null;
+  labelWidth: number | null;
+  factor2?: boolean;
+  factor1?: boolean;
+  barBorderTopLeftRadius: number;
+  barBorderTopRightRadius: number;
+  barBorderBottomLeftRadius: number;
+  barBorderBottomRightRadius: number;
 };
+
+export type LineDatum = { value: number; dateKey: string };

@@ -3,10 +3,19 @@ import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
 import { tertiary, secondary } from "@/constants/Colors";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
-import type { ChartDatum, LogEntries, LogEntryStatName } from "./type";
+import type {
+  ChartDatum,
+  LogEntries,
+  LogEntryStatName,
+  LogEntryFactors,
+} from "./type";
+
+type FactorMapType = {
+  [key: number]: { name: keyof LogEntryFactors; color: string };
+};
 
 const BORDER_RADIUS = 1;
-const FACTOR_MAP = {
+const FACTOR_MAP: FactorMapType = {
   1: { name: "factor1", color: tertiary },
   2: { name: "factor2", color: secondary },
 };
@@ -37,7 +46,7 @@ export const getChartDataRange = (
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
 
-    let frontColor;
+    let frontColor = null;
     if (factorNumToShow > 0) {
       const { name, color } = FACTOR_MAP[factorNumToShow];
       frontColor = entry?.[name] ? color : null;
@@ -46,7 +55,7 @@ export const getChartDataRange = (
     lineData.push({ value, dateKey });
 
     chartData.push({
-      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey, i),
+      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey),
       value,
       frontColor,
       factor2: entry?.factor2,
@@ -62,8 +71,11 @@ export const getChartDataRange = (
   return { chartData, lineData };
 };
 
-export async function asyncGetChartDataRange(...props) {
+export async function asyncGetChartDataRange(
+  ...props: any
+): Promise<GetChartDataRangeReturnType> {
   return new Promise((resolve) => {
+    // @ts-expect-error: "this"
     const result = getChartDataRange.apply(this, props);
     const movingAverageLine = calculateMovingAverage(result.lineData);
     setTimeout(() => resolve({ ...result, lineData: movingAverageLine }), 0);
@@ -81,7 +93,7 @@ export const calculateMovingAverage = (arr: LineDatum[]): LineDatum[] => {
     const nextValue = findClosestValue(arr, index, 1);
     let divider = 1;
     divider += Number(previousValue != null) + Number(nextValue != null);
-    const mean = (value + previousValue + nextValue) / divider;
+    const mean = (value + (previousValue ?? 0) + (nextValue ?? 0)) / divider;
     return {
       value: mean,
       dateKey,
@@ -110,12 +122,14 @@ export const updateChartDataWithFactorColor = (
   });
 };
 
+type FindClosestValueReturnType = null | number;
+
 // To avoid having nulls affect the average we are skipping over them and finding the closest real value
 const findClosestValue = (
   arr: LineDatum[],
   index: number,
   direction: -1 | 1,
-) => {
+): FindClosestValueReturnType => {
   if (
     (direction === -1 && index <= 0) ||
     (direction === 1 && index >= arr.length - 1)

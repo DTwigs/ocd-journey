@@ -8,20 +8,32 @@ import { INTERVALS } from "@/constants/Dates";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { logEntryModel } from "@/models/logEntry";
-import type { LogEntries, LogEntryStatName } from "@/models/logEntry/type";
+import type {
+  LogEntries,
+  LogEntryStatName,
+  ChartDatum,
+  LineDatum,
+} from "@/models/logEntry/type";
 
 const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
   logEntryModel;
 
+type IntervalKeys = keyof typeof INTERVALS;
+
 type StatsChartProps = {
   entries: LogEntries;
   stat: LogEntryStatName;
-  interval: (typeof INTERVALS)[Keys];
-  icon: string;
+  interval: (typeof INTERVALS)[IntervalKeys];
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
   label: string;
   showXLabel?: boolean;
   selectedFactor?: number;
 };
+
+type ChartState = {
+  chartData: ChartDatum<number>[];
+  lineData: LineDatum[];
+} | null;
 
 export const StatsChart = ({
   entries,
@@ -33,7 +45,7 @@ export const StatsChart = ({
   selectedFactor = 0,
 }: StatsChartProps) => {
   const colorScheme = useColorScheme();
-  const [chartState, setChartState] = useState(null);
+  const [chartState, setChartState] = useState<ChartState>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -70,18 +82,18 @@ export const StatsChart = ({
     <View
       style={[
         styles.contents,
-        { backgroundColor: Colors[colorScheme].backgroundTint },
+        { backgroundColor: Colors[colorScheme ?? "light"].backgroundTint },
       ]}
     >
       <View style={styles.chartIcon}>
         <MaterialCommunityIcons
           size={24}
           name={icon}
-          color={Colors[colorScheme].lightText}
+          color={Colors[colorScheme ?? "light"].lightText}
         />
         <Text
           style={{
-            color: Colors[colorScheme].lightText,
+            color: Colors[colorScheme ?? "light"].lightText,
           }}
         >
           {label}
@@ -99,7 +111,7 @@ export const StatsChart = ({
         >
           <ActivityIndicator
             size="small"
-            color={Colors[colorScheme].lightText}
+            color={Colors[colorScheme ?? "light"].lightText}
           />
         </View>
       ) : (
@@ -109,11 +121,13 @@ export const StatsChart = ({
           stepHeight={30}
           barWidth={CHART_PROPS_BY_INTERVAL[interval].barWidth}
           spacing={CHART_PROPS_BY_INTERVAL[interval].spacing}
-          frontColor={Colors[colorScheme].background}
+          frontColor={Colors[colorScheme ?? "light"].background}
           xAxisThickness={0}
-          xAxisColor={Colors[colorScheme].secondary}
+          xAxisColor={Colors[colorScheme ?? "light"].secondary}
           xAxisLabelTextStyle={{
-            color: showXLabel ? Colors[colorScheme].lightText : "transparent",
+            color: showXLabel
+              ? Colors[colorScheme ?? "light"].lightText
+              : "transparent",
             textAlign: "center",
             overflow: "visible",
           }}
@@ -122,14 +136,14 @@ export const StatsChart = ({
           yAxisTextStyle={{ color: "transparent" }}
           hideYAxisText
           hideRules
-          rulesColor={Colors[colorScheme].backgroundTint}
+          rulesColor={Colors[colorScheme ?? "light"].backgroundTint}
           noOfSections={CHART_MAX / RULE_DIVIDER}
           maxValue={CHART_MAX}
           showLine
           lineData={chartState.lineData}
           lineConfig={{
             curved: true,
-            color: Colors[colorScheme].lightText,
+            color: Colors[colorScheme ?? "light"].lightText,
             thickness: 3,
             hideDataPoints: true,
             initialSpacing: -1,
@@ -152,7 +166,7 @@ const styles = StyleSheet.create({
   },
   chartIcon: {
     flexDirection: "column",
-    justifyContents: "center",
+    justifyContent: "center",
     alignItems: "center",
     width: 70,
     minHeight: 34,

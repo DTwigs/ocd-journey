@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import { AppState } from "react-native";
 import type { AppStateStatus } from "react-native";
 import "react-native-reanimated";
+import ErrorBoundary from "react-native-error-boundary";
+import { ErrorFallback } from "@/components/ErrorFallback";
 import { parseISO, isSameDay } from "date-fns";
 import * as db from "@/db";
 import { useStore } from "@/hooks/useStore";
@@ -60,7 +62,7 @@ export default function Root() {
   };
 
   return (
-    <>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
@@ -71,8 +73,9 @@ export default function Root() {
         />
         <Stack.Screen name="+not-found" />
       </Stack>
+
       <StatusBar style="auto" />
       <ToastWrapper />
-    </>
+    </ErrorBoundary>
   );
 }

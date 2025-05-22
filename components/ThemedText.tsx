@@ -1,5 +1,4 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
-
 import { useThemeColors } from "@/hooks/useThemeColors";
 
 export type ThemedTextProps = TextProps & {
@@ -42,12 +41,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    lineHeight: 32,
+    fontSize: 52,
+    // fontWeight: "bold",
+    lineHeight: 52,
   },
   subtitle: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: "bold",
   },
   link: {

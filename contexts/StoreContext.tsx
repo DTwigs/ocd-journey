@@ -5,7 +5,7 @@ import { settingsModel } from "@/models/settings";
 import * as db from "@/db";
 import { uiError } from "@/utils/logger";
 import { mockLogEntries } from "@/mockData/mockLogEntries";
-import type State from "@/models/state/type";
+import type { State } from "@/models/state/type";
 
 const { fillMissingLogs } = logEntryModel;
 

@@ -12,7 +12,7 @@ const tintColorDark = "#EFE9E7";
 
 export const Colors: { [key: string]: any } = {
   light: {
-    text: "#232130",
+    text: "#353249", //"#232130",
     lightText: "#353249",
     backgroundTint: "#D6C7C2",
     background: "#EFE9E7",

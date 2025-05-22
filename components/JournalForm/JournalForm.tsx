@@ -3,15 +3,15 @@ import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { Colors } from "@/constants/Colors";
 import { CustomSlider } from "@/components/CustomSlider";
 import { CustomCheckbox } from "@/components/CustomCheckbox";
-import { Colors } from "@/constants/Colors";
 import {
   MOOD_ICON_MAP,
   BATTERY_ICON_MAP,
   ANXIETY_ICON_MAP,
 } from "@/constants/JournalIcons";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
 import { logEntryModel } from "@/models/logEntry";
 import type {
@@ -30,7 +30,7 @@ type LogEntryStatsRequired = {
 export const JournalForm = () => {
   const router = useRouter();
   const { logEntries, settings, dispatch } = useStore();
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const { factors } = settings;
 
   // prefill journal values if journal entry already exists
@@ -91,7 +91,7 @@ export const JournalForm = () => {
           <MaterialCommunityIcons
             size={96}
             name="check-circle"
-            color={Colors[colorScheme ?? "light"].text}
+            color={colors.text}
           />
         </Pressable>
       </View>

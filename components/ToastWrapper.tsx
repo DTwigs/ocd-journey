@@ -2,12 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Colors } from "@/constants/Colors";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export default function ToastWrapper() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = useThemeColors();
 
   const toastConfig = {
     pixelToast: ({ text1 }: any) => (

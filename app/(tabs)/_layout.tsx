@@ -5,33 +5,27 @@ import { Platform, Pressable, StyleSheet } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const router = useRouter();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].text,
+        tabBarActiveTintColor: colors.text,
         headerRight: () => (
           <Pressable
             onPress={() => router.navigate("/settings")}
             style={styles.headerRight}
           >
-            <MaterialCommunityIcons
-              size={28}
-              name="cog"
-              color={Colors[colorScheme ?? "light"].text}
-            />
+            <MaterialCommunityIcons size={28} name="cog" color={colors.text} />
           </Pressable>
         ),
         headerShown: true,
         headerStyle: {
-          backgroundColor: Colors[colorScheme ?? "light"].background,
+          backgroundColor: colors.background,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
@@ -39,6 +33,7 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontFamily: "LcdPhone",
           fontSize: 20,
+          color: colors.text,
         },
         tabBarButton: HapticTab,
         // tabBarBackground: TabBarBackground,

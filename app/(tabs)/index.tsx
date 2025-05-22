@@ -3,8 +3,7 @@ import { useCallback, useRef } from "react";
 import { throttle } from "@/utils/throttle";
 import { ThemedText } from "@/components/ThemedText";
 import ResistChart from "@/components/ResistChart";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
 import { logEntryModel } from "@/models/logEntry";
 import { AnimatedPlusExp } from "@/components/AnimatedPlusExp";
@@ -12,15 +11,15 @@ import { AnimatedSpringIcon } from "@/components/AnimatedSpringIcon";
 
 export default function HomeScreen() {
   const { dispatch } = useStore();
-  const colorScheme = useColorScheme();
-  const animatedPlusExpRef = useRef();
-  const animatedIconRef = useRef();
+  const colors = useThemeColors();
+  const animatedPlusExpRef = useRef<{ animate: () => void }>();
+  const animatedIconRef = useRef<{ animate: () => void }>();
 
   const handlePress = useCallback(
     throttle(() => {
       dispatch({ type: logEntryModel.ADD_RESIST });
-      animatedIconRef.current.animate();
-      animatedPlusExpRef.current.animate();
+      animatedIconRef.current?.animate();
+      animatedPlusExpRef.current?.animate();
     }, 1000),
     [throttle],
   );
@@ -29,7 +28,7 @@ export default function HomeScreen() {
     <ScrollView
       contentContainerStyle={[
         styles.container,
-        { backgroundColor: Colors[colorScheme].background },
+        { backgroundColor: colors.background },
       ]}
     >
       <View style={styles.contents}>
@@ -37,11 +36,11 @@ export default function HomeScreen() {
           <AnimatedSpringIcon
             size={128}
             icon="arrow-up-bold-circle"
-            color={Colors[colorScheme].text}
+            color={colors.text}
             ref={animatedIconRef}
           />
         </Pressable>
-        <ThemedText style={{ color: Colors[colorScheme].lightText }}>
+        <ThemedText style={{ color: colors.lightText }}>
           Press every time you resist a compulsion!
         </ThemedText>
       </View>
@@ -49,7 +48,7 @@ export default function HomeScreen() {
       <View style={[styles.chart]}>
         <AnimatedPlusExp
           text="+1 Resist"
-          color={Colors[colorScheme].tertiary}
+          color={colors.tertiary}
           ref={animatedPlusExpRef}
         />
         <ResistChart />

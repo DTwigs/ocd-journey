@@ -1,18 +1,12 @@
 import { StyleSheet, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import StatsContainer from "@/components/Stats";
 
 export default function Stats() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: Colors[colorScheme].background },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <StatsContainer />
     </View>
   );

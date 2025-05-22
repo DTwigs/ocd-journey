@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import {
   MOOD_ICON_MAP,
   BATTERY_ICON_MAP,
@@ -19,7 +18,7 @@ export const StatsContainer = () => {
     INTERVALS.WEEK,
   );
   const [selectedFactor, setSelectedFactor] = useState<number>(0);
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const { logEntries, settings } = useStore();
 
   const statButtons = [
@@ -81,7 +80,7 @@ export const StatsContainer = () => {
       <View style={styles.buttonGroupContainer}>
         <GroupButton
           items={intervalButtons}
-          colors={Colors[colorScheme]}
+          colors={colors}
           selected={selectedInterval}
         />
       </View>
@@ -101,7 +100,7 @@ export const StatsContainer = () => {
       <View style={{ marginTop: 40 }}>
         <StatsLegend
           factors={settings.factors}
-          colors={Colors[colorScheme]}
+          colors={colors}
           onPress={onLegendPress}
         />
       </View>

@@ -2,9 +2,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
-
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 type CustomCheckboxProps = {
   text: string;
@@ -17,7 +15,7 @@ export const CustomCheckbox = ({
   value,
   setValue,
 }: CustomCheckboxProps) => {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   const onPress = () => {
     setValue(!value);
@@ -28,7 +26,7 @@ export const CustomCheckbox = ({
       <MaterialCommunityIcons
         size={32}
         name={value ? "checkbox-marked" : "checkbox-blank"}
-        color={Colors[colorScheme].text}
+        color={colors.text}
       />
       <ThemedText style={styles.text}>{text}</ThemedText>
     </Pressable>

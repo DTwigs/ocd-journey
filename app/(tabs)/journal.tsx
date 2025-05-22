@@ -1,18 +1,12 @@
 import { StyleSheet, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import JournalForm from "@/components/JournalForm";
 
 export default function Journal() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: Colors[colorScheme].background },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <JournalForm />
     </View>
   );

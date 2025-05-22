@@ -5,8 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 import { ThemedText } from "@/components/ThemedText";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
 import { settingsModel } from "@/models/settings";
 import { Factors } from "@/models/settings/type";
@@ -14,10 +13,8 @@ import { Factors } from "@/models/settings/type";
 export const FactorsForm = () => {
   // const router = useRouter();
   const { settings, dispatch } = useStore();
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const { factors } = settings;
-
-  const colors = Colors[colorScheme ?? "light"];
 
   const [customFactors, setCustomFactors] = useState<Factors>({
     factor1: { name: factors.factor1.name },
@@ -93,7 +90,7 @@ export const FactorsForm = () => {
           <MaterialCommunityIcons
             size={96}
             name="check-circle"
-            color={Colors[colorScheme ?? "light"].text}
+            color={colors.text}
           />
         </Pressable>
       </View>

@@ -4,14 +4,13 @@ import { Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import "react-native-reanimated";
 
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function Root() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const router = useRouter();
 
   return (
@@ -21,21 +20,19 @@ export default function Root() {
           title: "SETTINGS",
           headerShown: true,
           headerStyle: {
-            backgroundColor: Colors[colorScheme ?? "light"].background,
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 0,
+            backgroundColor: colors.background,
           },
           headerTitleStyle: {
             fontFamily: "LcdPhone",
             fontSize: 20,
+            color: colors.text,
           },
           headerLeft: () => (
             <Pressable onPress={() => router.back()} style={styles.headerLeft}>
               <MaterialCommunityIcons
                 size={28}
                 name="chevron-left"
-                color={Colors[colorScheme ?? "light"].text}
+                color={colors.text}
               />
             </Pressable>
           ),
@@ -53,7 +50,7 @@ export default function Root() {
                 <MaterialCommunityIcons
                   size={28}
                   name="home"
-                  color={Colors[colorScheme ?? "light"].text}
+                  color={colors.text}
                 />
               </Pressable>
             ),

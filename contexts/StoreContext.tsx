@@ -42,6 +42,7 @@ export const StoreProvider = (props) => {
 
   const init = async () => {
     // await db.removeLogEntriesData();
+    // await db.removeSettingsData();
     // use mockData
     // const logEntries = mockLogEntries;
     const logEntries = await db.getLogEntries();

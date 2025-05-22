@@ -1,33 +1,24 @@
 import { Pressable, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import { ThemedText } from "@/components/ThemedText";
 
 export default function Settings() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const router = useRouter();
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: Colors[colorScheme].background },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Pressable
-        style={[
-          styles.linkItem,
-          { borderColor: Colors[colorScheme].backgroundTint },
-        ]}
+        style={[styles.linkItem, { borderColor: colors.backgroundTint }]}
         onPress={() => router.navigate("/settings/customize")}
       >
         <ThemedText type="defaultSemiBold">Customize</ThemedText>
         <MaterialCommunityIcons
           size={28}
           name="chevron-right"
-          color={Colors[colorScheme ?? "light"].text}
+          color={colors.text}
         />
       </Pressable>
     </View>

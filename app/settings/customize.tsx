@@ -1,18 +1,12 @@
 import { StyleSheet, View } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import FactorsForm from "@/components/FactorsForm";
 
 export default function Customization() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: Colors[colorScheme ?? "light"].background },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <FactorsForm />
     </View>
   );

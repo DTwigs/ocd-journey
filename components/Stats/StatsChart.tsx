@@ -3,10 +3,9 @@ import { BarChart } from "react-native-gifted-charts";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { Colors } from "@/constants/Colors";
 import { INTERVALS } from "@/constants/Dates";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 import { logEntryModel } from "@/models/logEntry";
 import type {
   LogEntries,
@@ -44,7 +43,7 @@ export const StatsChart = ({
   showXLabel = false,
   selectedFactor = 0,
 }: StatsChartProps) => {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   const [chartState, setChartState] = useState<ChartState>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -79,21 +78,16 @@ export const StatsChart = ({
   const CHART_MAX = 10;
 
   return (
-    <View
-      style={[
-        styles.contents,
-        { backgroundColor: Colors[colorScheme ?? "light"].backgroundTint },
-      ]}
-    >
+    <View style={[styles.contents, { backgroundColor: colors.backgroundTint }]}>
       <View style={styles.chartIcon}>
         <MaterialCommunityIcons
           size={24}
           name={icon}
-          color={Colors[colorScheme ?? "light"].lightText}
+          color={colors.lightText}
         />
         <Text
           style={{
-            color: Colors[colorScheme ?? "light"].lightText,
+            color: colors.lightText,
           }}
         >
           {label}
@@ -109,10 +103,7 @@ export const StatsChart = ({
             height: 88,
           }}
         >
-          <ActivityIndicator
-            size="small"
-            color={Colors[colorScheme ?? "light"].lightText}
-          />
+          <ActivityIndicator size="small" color={colors.lightText} />
         </View>
       ) : (
         <BarChart
@@ -121,13 +112,11 @@ export const StatsChart = ({
           stepHeight={30}
           barWidth={CHART_PROPS_BY_INTERVAL[interval].barWidth}
           spacing={CHART_PROPS_BY_INTERVAL[interval].spacing}
-          frontColor={Colors[colorScheme ?? "light"].background}
+          frontColor={colors.background}
           xAxisThickness={0}
-          xAxisColor={Colors[colorScheme ?? "light"].secondary}
+          xAxisColor={colors.secondary}
           xAxisLabelTextStyle={{
-            color: showXLabel
-              ? Colors[colorScheme ?? "light"].lightText
-              : "transparent",
+            color: showXLabel ? colors.lightText : "transparent",
             textAlign: "center",
             overflow: "visible",
           }}
@@ -136,14 +125,14 @@ export const StatsChart = ({
           yAxisTextStyle={{ color: "transparent" }}
           hideYAxisText
           hideRules
-          rulesColor={Colors[colorScheme ?? "light"].backgroundTint}
+          rulesColor={colors.backgroundTint}
           noOfSections={CHART_MAX / RULE_DIVIDER}
           maxValue={CHART_MAX}
           showLine
           lineData={chartState.lineData}
           lineConfig={{
             curved: true,
-            color: Colors[colorScheme ?? "light"].lightText,
+            color: colors.lightText,
             thickness: 3,
             hideDataPoints: true,
             initialSpacing: -1,

@@ -24,7 +24,7 @@ import React from "react";
 import { StyleSheet, View, PanResponder, Animated, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 type CustomSliderProps = {
   name?: string;
@@ -45,13 +45,14 @@ export const CustomSlider = ({
   colorHighlight = "#008ee6",
   setValue,
 }: CustomSliderProps) => {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
   // ----------------- Slider ----------------------- //
   const pan = React.useRef(new Animated.ValueXY()).current;
 
   const animState = React.useRef({
     displayMinVal: 0,
     sliderWidth: 0,
+    sliderHeight: 0,
     stepWidth: 0,
     minBoundary: 0,
     maxBoundary: 0,
@@ -69,7 +70,7 @@ export const CustomSlider = ({
   const [minBoundaryPosition, setMinBoundaryPosition] = React.useState(0);
   const [maxBoundaryPosition, setMaxBoundaryPosition] = React.useState(0);
 
-  const setSliderSize = (height, width) => {
+  const setSliderSize = (height: number, width: number) => {
     // setSliderHeight(height);
     const sWidth = width - height; // - height : Avoid the slider to overlap the borders
     setSliderWidth(sWidth);
@@ -159,16 +160,13 @@ export const CustomSlider = ({
           }
         >
           <View
-            style={[
-              s.lineContainer,
-              { backgroundColor: Colors[colorScheme].lightText },
-            ]}
+            style={[s.lineContainer, { backgroundColor: colors.lightText }]}
           >
             <Animated.View
               style={[
                 s.line,
                 [
-                  { backgroundColor: Colors[colorScheme].lightText },
+                  { backgroundColor: colors.lightText },
                   {
                     translateX: pan.x.interpolate({
                       inputRange: [
@@ -232,7 +230,7 @@ export const CustomSlider = ({
           <View style={[s.boundary, { left: 0 }]} />
         </View>
         <View style={s.labelValue}>
-          <Text style={[s.labelValueText, { color: Colors[colorScheme].text }]}>
+          <Text style={[s.labelValueText, { color: colors.text }]}>
             {animState.displayMinVal}
           </Text>
         </View>

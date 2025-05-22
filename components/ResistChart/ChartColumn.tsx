@@ -1,10 +1,9 @@
 import { StyleSheet, View } from "react-native";
 
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 export function ChartColumn({ count }: { count: number }) {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   const countedArray = new Array(count).fill(1);
 
@@ -13,10 +12,7 @@ export function ChartColumn({ count }: { count: number }) {
       {countedArray.map((_, i) => (
         <View
           key={i}
-          style={[
-            styles.countItem,
-            { backgroundColor: Colors[colorScheme].text },
-          ]}
+          style={[styles.countItem, { backgroundColor: colors.text }]}
         ></View>
       ))}
     </View>

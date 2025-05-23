@@ -10,6 +10,7 @@ import { ErrorFallback } from "@/components/ErrorFallback";
 import { parseISO, isSameDay } from "date-fns";
 import * as db from "@/db";
 import { useStore } from "@/hooks/useStore";
+import { useDarkMode } from "@/hooks/useDarkMode";
 import ToastWrapper from "./ToastWrapper";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -18,6 +19,7 @@ SplashScreen.preventAutoHideAsync();
 export default function Root() {
   const store = useStore();
   const appState = useRef(AppState.currentState);
+  const isDarkMode = useDarkMode();
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", onAppStateChange);
@@ -73,8 +75,7 @@ export default function Root() {
         />
         <Stack.Screen name="+not-found" />
       </Stack>
-
-      <StatusBar style="auto" />
+      <StatusBar style={isDarkMode ? "light" : "dark"} />
       <ToastWrapper />
     </ErrorBoundary>
   );

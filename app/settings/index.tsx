@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { ThemedText } from "@/components/ThemedText";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 export default function Settings() {
   const colors = useThemeColors();
@@ -21,6 +22,7 @@ export default function Settings() {
           color={colors.text}
         />
       </Pressable>
+      <DarkModeToggle />
     </View>
   );
 }

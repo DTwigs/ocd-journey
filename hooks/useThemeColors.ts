@@ -4,17 +4,10 @@
  */
 
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { useStore } from "@/hooks/useStore";
+import { useDarkMode } from "./useDarkMode";
 
 export function useThemeColors(): typeof Colors {
-  let theme = useColorScheme() ?? "light";
-  const { settings } = useStore();
-  let settingsTheme: "light" | "dark" | null = null;
-  if (settings.darkMode != null) {
-    settingsTheme = settings.darkMode ? "dark" : "light";
-  }
+  const isDarkMode = useDarkMode();
 
-  theme = settingsTheme ?? theme;
-  return Colors[theme];
+  return Colors[isDarkMode ? "dark" : "light"];
 }

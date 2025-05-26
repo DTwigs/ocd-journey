@@ -1,6 +1,13 @@
 import { useState } from "react";
 // import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
@@ -44,7 +51,7 @@ export const FactorsForm = () => {
   };
 
   return (
-    <View style={[styles.contents]}>
+    <KeyboardAvoidingView contentContainerStyle={[styles.contents]}>
       <View style={styles.formContainer}>
         <View>
           <ThemedText style={styles.sectionHeading}>Factors</ThemedText>
@@ -94,7 +101,7 @@ export const FactorsForm = () => {
           />
         </Pressable>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

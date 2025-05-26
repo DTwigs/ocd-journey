@@ -1,21 +1,30 @@
 {
   "expo": {
-    "name": "ocd-tracker",
+    "name": "OCD Journey",
     "slug": "ocd-tracker",
-    "version": "1.0.0",
+    "version": "0.0.1",
+    "updates": {
+      "enabled": true,
+      "fallbackToCacheTimeout": 0
+    },
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/ios-light.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": ["assets/fonts", "assets/images", "assets/sounds"],
+    "description": "Track your OCD journey by recording a daily journal and leveling up your ability to resist compulsions.",
     "ios": {
       "bundleIdentifier": "com.twigs.ocdtracker",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#EFE9E7"
       }
     },
     "web": {
@@ -28,15 +37,27 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/splash-icon-light.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#EFE9E7",
+          "dark": {
+            "image": "./assets/images/splash-icon-dark.png",
+            "backgroundColor": "#353249"
+          }
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8c1aa15b-ade6-4978-a2f2-ac336685123d"
+      }
     }
   }
 }

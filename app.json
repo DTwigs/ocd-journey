@@ -12,7 +12,11 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "assetBundlePatterns": ["assets/fonts", "assets/images", "assets/sounds"],
+    "assetBundlePatterns": [
+      "assets/fonts",
+      "assets/images",
+      "assets/sounds"
+    ],
     "description": "Track your OCD journey by recording a daily journal and leveling up your ability to resist compulsions.",
     "ios": {
       "bundleIdentifier": "com.twigs.ocdtracker",
@@ -25,7 +29,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#EFE9E7"
-      }
+      },
+      "package": "com.twigs.ocdtracker"
     },
     "web": {
       "bundler": "metro",

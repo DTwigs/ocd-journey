@@ -21,6 +21,7 @@ type SettingsReducers = {
 export const reducers: SettingsReducers = {
   [SET_FACTORS]: (state: State, value: Factors) => {
     const updatedSettings = {
+      ...state.settings,
       factors: value,
     };
 

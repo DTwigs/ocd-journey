@@ -17,7 +17,7 @@ export default function ToastWrapper() {
     ),
   };
 
-  return <Toast config={toastConfig} />;
+  return <Toast config={toastConfig} position="bottom" bottomOffset={120} />;
 }
 
 const styles = StyleSheet.create({

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 import { Colors } from "@/constants/Colors";
 import { CustomSlider } from "@/components/CustomSlider";
@@ -50,6 +51,11 @@ export const JournalForm = () => {
 
   const onPress = () => {
     dispatch({ type: logEntryModel.SAVE_LOG, value: entryStats });
+    Toast.show({
+      type: "pixelToast",
+      text1: isNaN(todaysLog?.mood) ? "Saved!" : "Updated!",
+      position: "bottom",
+    });
     router.navigate("/(tabs)/stats");
   };
 

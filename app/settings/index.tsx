@@ -22,6 +22,17 @@ export default function Settings() {
           color={colors.text}
         />
       </Pressable>
+      <Pressable
+        style={[styles.linkItem, { borderColor: colors.backgroundTint }]}
+        onPress={() => router.navigate("/settings/privacy")}
+      >
+        <ThemedText type="defaultSemiBold">Privacy</ThemedText>
+        <MaterialCommunityIcons
+          size={28}
+          name="chevron-right"
+          color={colors.text}
+        />
+      </Pressable>
       <DarkModeToggle />
     </View>
   );

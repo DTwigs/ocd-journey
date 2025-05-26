@@ -51,7 +51,7 @@ export const FactorsForm = () => {
   };
 
   return (
-    <KeyboardAvoidingView contentContainerStyle={[styles.contents]}>
+    <KeyboardAvoidingView style={[styles.contents]}>
       <View style={styles.formContainer}>
         <View>
           <ThemedText style={styles.sectionHeading}>Factors</ThemedText>

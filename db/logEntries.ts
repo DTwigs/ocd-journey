@@ -7,12 +7,12 @@ export const removeLogEntriesData = async () => {
   return Promise.all([remove(LOG_ENTRIES)]);
 };
 
-export const getLogEntries = async (): LogEntries => {
-  const data: LogEntries = await get(LOG_ENTRIES);
+export const getLogEntries = async (): Promise<LogEntries> => {
+  const data: string = await get(LOG_ENTRIES);
 
   return new Map(JSON.parse(data));
 };
 
-export const setLogEntries = async (data: LogEntries): LogEntries => {
+export const setLogEntries = async (data: LogEntries): Promise<void> => {
   return set(LOG_ENTRIES, JSON.stringify(Array.from(data)));
 };

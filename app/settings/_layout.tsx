@@ -62,6 +62,12 @@ export default function Root() {
             title: "CUSTOMIZE",
           }}
         />
+        <Stack.Screen
+          name="privacy"
+          options={{
+            title: "PRIVACY",
+          }}
+        />
       </Stack>
     </>
   );

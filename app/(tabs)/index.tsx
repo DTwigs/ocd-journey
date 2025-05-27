@@ -13,12 +13,12 @@ export default function HomeScreen() {
   const { dispatch } = useStore();
   const colors = useThemeColors();
   const animatedPlusExpRef = useRef<{ animate: () => void }>();
-  const animatedIconRef = useRef<{ animate: () => void }>();
+  // const animatedIconRef = useRef<{ animate: () => void }>();
 
   const handlePress = useCallback(
     throttle(() => {
       dispatch({ type: logEntryModel.ADD_RESIST });
-      animatedIconRef.current?.animate();
+      // animatedIconRef.current?.animate();
       animatedPlusExpRef.current?.animate();
     }, 1000),
     [throttle],
@@ -37,7 +37,7 @@ export default function HomeScreen() {
             size={128}
             icon="arrow-up-bold-circle"
             color={colors.text}
-            ref={animatedIconRef}
+            // ref={animatedIconRef}
           />
         </Pressable>
         <ThemedText style={{ color: colors.lightText }}>

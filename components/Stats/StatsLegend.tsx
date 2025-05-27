@@ -1,23 +1,41 @@
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import type { Factors } from "@/model/settings/type";
+import type { Factors } from "@/models/settings/type";
 
 type StatsLegendPropsType = {
   factors: Factors;
   colors: any;
   onPress: (val: number) => void;
+  selectedFactor: number;
 };
 
 export const StatsLegend = ({
   factors,
   colors,
   onPress,
+  selectedFactor,
 }: StatsLegendPropsType) => {
+  const activeStyle = {
+    backgroundColor: colors.backgroundTint,
+    borderColor: colors.backgroundTint,
+  };
+
+  const inactiveStyle = {
+    backgroundColor: colors.background,
+    borderColor: colors.backgroundTint,
+  };
+
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => onPress(1)} style={styles.legendItem}>
+      <Pressable
+        onPress={() => onPress(1)}
+        style={[
+          styles.legendItem,
+          selectedFactor === 1 ? activeStyle : inactiveStyle,
+        ]}
+      >
         <View
           style={[
-            styles.legendPill,
+            styles.legendDot,
             {
               backgroundColor: colors.tertiary,
             },
@@ -33,10 +51,16 @@ export const StatsLegend = ({
           {factors.factor1.name}
         </Text>
       </Pressable>
-      <Pressable onPress={() => onPress(2)} style={styles.legendItem}>
+      <Pressable
+        onPress={() => onPress(2)}
+        style={[
+          styles.legendItem,
+          selectedFactor === 2 ? activeStyle : inactiveStyle,
+        ]}
+      >
         <View
           style={[
-            styles.legendPill,
+            styles.legendDot,
             {
               backgroundColor: colors.secondary,
             },
@@ -65,8 +89,12 @@ const styles = StyleSheet.create({
   legendItem: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderRadius: 24,
   },
-  legendPill: {
+  legendDot: {
     height: 12,
     width: 12,
     borderRadius: 6,

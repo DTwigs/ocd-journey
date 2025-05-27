@@ -12,6 +12,13 @@ import { useStore } from "@/hooks/useStore";
 import { StatsChart } from "./StatsChart";
 import { StatsLegend } from "./StatsLegend";
 import { GroupButton } from "@/components/GroupButton";
+import { LogEntryStatName } from "@/models/logEntry/type";
+
+type StatButton = {
+  icon: any;
+  label: string;
+  value: LogEntryStatName;
+};
 
 export const StatsContainer = () => {
   const [selectedInterval, setSelectedInterval] = useState<number>(
@@ -21,7 +28,7 @@ export const StatsContainer = () => {
   const colors = useThemeColors();
   const { logEntries, settings } = useStore();
 
-  const statButtons = [
+  const statButtons: StatButton[] = [
     {
       icon: MOOD_ICON_MAP[10],
       label: "Mood",
@@ -102,6 +109,7 @@ export const StatsContainer = () => {
           factors={settings.factors}
           colors={colors}
           onPress={onLegendPress}
+          selectedFactor={selectedFactor}
         />
       </View>
     </View>
@@ -114,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    height: "100",
+    height: 100,
   },
   buttonGroupContainer: {
     paddingTop: 40,

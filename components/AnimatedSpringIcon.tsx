@@ -1,47 +1,42 @@
-import { forwardRef, useImperativeHandle } from "react";
 import Animated, {
-  useAnimatedProps,
+  useAnimatedStyle,
   useSharedValue,
   withTiming,
-  withSequence,
   withSpring,
 } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-export const AnimatedIcon = Animated.createAnimatedComponent(
-  MaterialCommunityIcons,
-);
+import { GestureDetector, Gesture } from "react-native-gesture-handler";
 
 type AnimatedSpringIconProps = {
   color: string;
   size: number;
-  icon: string;
+  icon: any;
 };
 
-export const AnimatedSpringIcon = forwardRef(
-  ({ color, size, icon }: AnimatedSpringIconProps, ref) => {
-    const animBtnScale = useSharedValue<number>(1);
+export const AnimatedSpringIcon = ({
+  color,
+  size,
+  icon,
+}: AnimatedSpringIconProps) => {
+  const animBtnScale = useSharedValue<number>(1);
 
-    const animatedProps = useAnimatedProps(() => ({
-      transform: [{ scale: animBtnScale.value }],
-    }));
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ scale: animBtnScale.value }],
+  }));
 
-    useImperativeHandle(ref, () => ({
-      animate: () => {
-        animBtnScale.value = withSequence(
-          withTiming(0.5, { duration: 100 }),
-          withSpring(1, { damping: 10, stiffness: 350 }),
-        );
-      },
-    }));
+  const tap = Gesture.Tap()
+    .onBegin(() => {
+      animBtnScale.value = withTiming(0.5, { duration: 100 });
+    })
+    .onFinalize(() => {
+      animBtnScale.value = withSpring(1, { damping: 10, stiffness: 350 });
+    });
 
-    return (
-      <AnimatedIcon
-        size={size}
-        name={icon}
-        color={color}
-        animatedProps={animatedProps}
-      />
-    );
-  },
-);
+  return (
+    <GestureDetector gesture={tap}>
+      <Animated.View style={animatedStyles}>
+        <MaterialCommunityIcons size={size} name={icon} color={color} />
+      </Animated.View>
+    </GestureDetector>
+  );
+};

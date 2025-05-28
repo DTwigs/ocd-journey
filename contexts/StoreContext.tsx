@@ -2,6 +2,7 @@ import { createContext, useReducer } from "react";
 import { logEntryModel } from "@/models/logEntry";
 import { stateModel } from "@/models/state";
 import { settingsModel } from "@/models/settings";
+import { characterModel } from "@/models/character";
 import * as db from "@/db";
 import { uiError } from "@/utils/logger";
 import { mockLogEntries } from "@/mockData/mockLogEntries";
@@ -11,6 +12,7 @@ const { fillMissingLogs } = logEntryModel;
 
 const initialState = {
   ...logEntryModel.initialState,
+  ...characterModel.initialState,
   ...settingsModel.initialState,
 };
 
@@ -21,9 +23,10 @@ const Reducers = {
   ...stateModel.reducers,
   ...logEntryModel.reducers,
   ...settingsModel.reducers,
+  ...characterModel.reducers,
 };
 
-type Action = { type: string } | { type: string; value: State };
+type Action = { type: keyof typeof Reducers; value?: any };
 
 const reducer = (state: State, action: Action) => {
   const act = Reducers[action.type];
@@ -37,7 +40,7 @@ const reducer = (state: State, action: Action) => {
   return { ...state, ...update };
 };
 
-export const StoreProvider = (props) => {
+export const StoreProvider = (props: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = async () => {
@@ -47,12 +50,14 @@ export const StoreProvider = (props) => {
     // const logEntries = mockLogEntries;
     const logEntries = await db.getLogEntries();
     const settings = await db.getSettings();
+    const character = await db.getCharacter();
 
     dispatch({
       type: stateModel.SET_STATE,
       value: {
         logEntries: fillMissingLogs(logEntries),
         settings: settings ?? initialState.settings,
+        character: character ?? initialState.character,
       },
     });
   };

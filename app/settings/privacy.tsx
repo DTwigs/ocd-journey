@@ -41,6 +41,7 @@ export default function Privacy() {
     // await PushNotifications.cancelAllNotifications();
     await db.removeLogEntriesData();
     await db.removeSettingsData();
+    await db.removeCharacterData();
     store.init();
     router.navigate("/");
   };

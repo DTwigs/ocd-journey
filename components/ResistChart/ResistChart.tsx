@@ -5,11 +5,11 @@ import { ChartColumn } from "./ChartColumn";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
 import type { LogEntryStats } from "@/models/logEntry/type";
-import type { State } from "@/models/state/type";
+// import type { State } from "@/models/state/type";
 
 export const ResistChart = () => {
   const router = useRouter();
-  const { logEntries } = useStore<State>();
+  const { logEntries } = useStore();
   const colors = useThemeColors();
   const logEntryArr: Array<[string, LogEntryStats]> =
     Array.from(logEntries).reverse();
@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     maxWidth: "80%",
     height: 100,
-    borderBottomWidth: 2,
+    // borderBottomWidth: 2,
   },
 });

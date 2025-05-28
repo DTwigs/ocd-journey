@@ -1,14 +1,20 @@
 import { StyleSheet, View } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import FactorsForm from "@/components/FactorsForm";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Customization() {
   const colors = useThemeColors();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { backgroundColor: colors.background },
+      ]}
+    >
       <FactorsForm />
-    </View>
+    </ScrollView>
   );
 }
 

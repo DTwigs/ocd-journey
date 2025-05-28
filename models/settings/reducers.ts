@@ -7,7 +7,7 @@ export const initialState = {
   settings: {
     factors: {
       factor1: { name: "Exercise" },
-      factor2: { name: "Monthly Cycle" },
+      factor2: { name: "Travel" },
     },
     darkMode: null,
   },

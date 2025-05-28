@@ -61,6 +61,7 @@ export const AnimatedPlusExp = forwardRef(
           overflow: "visible",
           flexDirection: "row",
           justifyContent: "center",
+          elevation: 5,
         }}
       >
         {elArray.map((keyNum) => (

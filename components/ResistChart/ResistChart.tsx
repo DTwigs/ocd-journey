@@ -2,7 +2,6 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 
 import { ChartColumn } from "./ChartColumn";
-import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
 import type { LogEntryStats } from "@/models/logEntry/type";
 // import type { State } from "@/models/state/type";
@@ -10,7 +9,7 @@ import type { LogEntryStats } from "@/models/logEntry/type";
 export const ResistChart = () => {
   const router = useRouter();
   const { logEntries } = useStore();
-  const colors = useThemeColors();
+  // @ts-expect-error: it complain too much
   const logEntryArr: Array<[string, LogEntryStats]> =
     Array.from(logEntries).reverse();
 
@@ -20,9 +19,9 @@ export const ResistChart = () => {
         router.navigate("/(tabs)/stats");
       }}
     >
-      <View style={[styles.contents, { borderBottomColor: colors.text }]}>
+      <View style={styles.contents}>
         {logEntryArr
-          .slice(0, 20)
+          .slice(0, 21)
           .map(([date, stats]: [string, LogEntryStats]): any => {
             return <ChartColumn count={stats.resists || 0} key={date} />;
           })}
@@ -38,6 +37,5 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     maxWidth: "80%",
     height: 100,
-    // borderBottomWidth: 2,
   },
 });

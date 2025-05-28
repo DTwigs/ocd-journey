@@ -7,6 +7,7 @@ import {
   TextInput,
   View,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
@@ -51,57 +52,64 @@ export const FactorsForm = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={[styles.contents]}>
-      <View style={styles.formContainer}>
-        <View>
-          <ThemedText style={styles.sectionHeading}>Factors</ThemedText>
-          <Text style={[styles.subTitle, { color: colors.lightText }]}>
-            Customize your factors by editing the fields below. Factors are used
-            to highlight areas on your Stats charts to see how these particular
-            factors affect your mood, energy, and anxiety.
-            {"\n"}
-          </Text>
-          <Text style={[styles.subTitle, { color: colors.lightText }]}>
-            Examples: Exercise, Period, Migraines, Medication, etc.
-          </Text>
-        </View>
-        <TextInput
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: colors.backgroundTint,
-              borderColor: colors.text,
-              color: colors.text,
-            },
-          ]}
-          value={customFactors.factor1.name}
-          placeholder="e.g. Exercise, Period, Migraine, etc."
-          onChangeText={setFactor1}
-        />
-        <TextInput
-          style={[
-            styles.textInput,
-            {
-              backgroundColor: colors.backgroundTint,
-              borderColor: colors.text,
-              color: colors.text,
-            },
-          ]}
-          value={customFactors.factor2.name}
-          placeholder="e.g. Exercise, Period, Migraine, etc."
-          onChangeText={setFactor2}
-        />
-      </View>
-      <View style={styles.submitButtonContainer}>
-        <Pressable onPress={onPress}>
-          <MaterialCommunityIcons
-            size={96}
-            name="check-circle"
-            color={colors.text}
+    <View style={[styles.contents]}>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ android: undefined, ios: "padding" })}
+        keyboardVerticalOffset={Platform.select({ ios: 90, android: 0 })}
+        style={styles.avoidingView}
+      >
+        <View style={styles.formContainer}>
+          <View>
+            <ThemedText style={styles.sectionHeading}>Factors</ThemedText>
+            <Text style={[styles.subTitle, { color: colors.lightText }]}>
+              Customize your factors by editing the fields below. Factors are
+              used to highlight areas on your Stats charts to see how these
+              particular factors affect your mood, energy, and anxiety.
+              {"\n"}
+            </Text>
+            <Text style={[styles.subTitle, { color: colors.lightText }]}>
+              Examples: Exercise, Period, Migraines, Medication, etc.
+            </Text>
+          </View>
+          <TextInput
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: colors.backgroundTint,
+                borderColor: colors.text,
+                color: colors.text,
+              },
+            ]}
+            value={customFactors.factor1.name}
+            placeholder="e.g. Exercise, Period, Travel, Migraine, etc."
+            onChangeText={setFactor1}
           />
-        </Pressable>
-      </View>
-    </KeyboardAvoidingView>
+          <TextInput
+            style={[
+              styles.textInput,
+              {
+                backgroundColor: colors.backgroundTint,
+                borderColor: colors.text,
+                color: colors.text,
+              },
+            ]}
+            value={customFactors.factor2.name}
+            placeholder="e.g. Exercise, Period, Travel, Migraine, etc."
+            onChangeText={setFactor2}
+          />
+        </View>
+
+        <View style={styles.submitButtonContainer}>
+          <Pressable onPress={onPress}>
+            <MaterialCommunityIcons
+              size={96}
+              name="check-circle"
+              color={colors.text}
+            />
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -115,6 +123,13 @@ const styles = StyleSheet.create({
     // justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
+    height: "100%",
+  },
+  avoidingView: {
+    width: "100%",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
   },
   formContainer: {
     width: "80%",

@@ -15,12 +15,14 @@ export default function HomeScreen() {
   const { character, dispatch } = useStore();
   const colors = useThemeColors();
   const animatedPlusExpRef = useRef<{ animate: () => void }>();
+  const animatedLevelUpRef = useRef<{ animate: () => void }>();
   const [experiencePct, setExperiencePct] = useState<number>(0);
   const loadCount = useRef(0);
 
   const handlePress = useCallback(() => {
     dispatch({ type: logEntryModel.ADD_RESIST });
     dispatch({ type: characterModel.ADD_TOTAL_RESIST });
+    animatedPlusExpRef.current?.animate();
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,11 +41,9 @@ export default function HomeScreen() {
     if (calculatedLevel != character.level) {
       setTimeout(() => {
         dispatch({ type: characterModel.LEVEL_UP, value: calculatedLevel });
-        // animatedCircleRef.current?.animate(); /
+        animatedLevelUpRef.current?.animate();
       }, 300);
     }
-
-    animatedPlusExpRef.current?.animate();
   }, [character.totalResists, character.level]);
 
   return (
@@ -67,6 +67,13 @@ export default function HomeScreen() {
           text="+1 Resist"
           color={colors.tertiary}
           ref={animatedPlusExpRef}
+        />
+        <AnimatedPlusExp
+          text="LEVEL UP!"
+          color={colors.secondary}
+          size={32}
+          single={true}
+          ref={animatedLevelUpRef}
         />
         <ResistChart />
         <ExperienceBar percent={experiencePct} level={character.level} />

@@ -1,1 +1,1 @@
-export const LEVEL_DENOMINATOR = 5;
+export const LEVEL_DENOMINATOR = 4;

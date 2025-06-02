@@ -13,6 +13,17 @@ export default function Settings() {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Pressable
         style={[styles.linkItem, { borderColor: colors.backgroundTint }]}
+        onPress={() => router.navigate("/settings/feedback")}
+      >
+        <ThemedText type="defaultSemiBold">Feedback</ThemedText>
+        <MaterialCommunityIcons
+          size={28}
+          name="chevron-right"
+          color={colors.text}
+        />
+      </Pressable>
+      <Pressable
+        style={[styles.linkItem, { borderColor: colors.backgroundTint }]}
         onPress={() => router.navigate("/settings/customize")}
       >
         <ThemedText type="defaultSemiBold">Customize</ThemedText>

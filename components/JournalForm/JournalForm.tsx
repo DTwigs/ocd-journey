@@ -19,6 +19,7 @@ import type {
   LogEntryJournalStats,
   LogEntryFactors,
 } from "@/models/logEntry/type";
+import { PSEUDO_PAGE_LOAD } from "@/constants/General";
 
 const { formatDateKey } = logEntryModel;
 
@@ -58,7 +59,7 @@ export const JournalForm = () => {
         position: "bottom",
       });
       router.navigate("/(tabs)/stats");
-    }, 100);
+    }, PSEUDO_PAGE_LOAD);
   };
 
   return (

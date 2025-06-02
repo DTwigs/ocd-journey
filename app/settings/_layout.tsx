@@ -57,6 +57,12 @@ export default function Root() {
           }}
         />
         <Stack.Screen
+          name="feedback"
+          options={{
+            title: "FEEDBACK",
+          }}
+        />
+        <Stack.Screen
           name="customize"
           options={{
             title: "CUSTOMIZE",

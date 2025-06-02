@@ -3,8 +3,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useThemeColors } from "@/hooks/useThemeColors";
 
 type IconToggleProps = {
-  icon1: any;
-  icon2: any;
+  icon1?: any;
+  icon2?: any;
   value: boolean;
   setValue: (value: boolean) => void;
 };
@@ -27,18 +27,22 @@ export const IconToggle = ({
   return (
     <Pressable onPress={onPress} style={[styles.contents, inactiveBG]}>
       <View style={[styles.icon, value ? activeBG : inactiveBG]}>
-        <MaterialCommunityIcons
-          size={24}
-          name={icon1}
-          color={value ? colors.text : colors.background}
-        />
+        {icon1 && (
+          <MaterialCommunityIcons
+            size={24}
+            name={icon1}
+            color={value ? colors.text : colors.background}
+          />
+        )}
       </View>
       <View style={[styles.icon, value ? inactiveBG : activeBG]}>
-        <MaterialCommunityIcons
-          size={24}
-          name={icon2}
-          color={value ? colors.background : colors.text}
-        />
+        {icon2 && (
+          <MaterialCommunityIcons
+            size={24}
+            name={icon2}
+            color={value ? colors.background : colors.text}
+          />
+        )}
       </View>
     </Pressable>
   );

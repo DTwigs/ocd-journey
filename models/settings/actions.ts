@@ -1,2 +1,3 @@
 export const SET_FACTORS = "SET_FACTORS";
 export const SET_DARKMODE = "SET_DARKMODE";
+export const SET_ONBOARDING = "SET_ONBOARDING";

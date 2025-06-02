@@ -13,6 +13,7 @@ import type {
   ChartDatum,
   LineDatum,
 } from "@/models/logEntry/type";
+import { Loader } from "../Loader";
 
 const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
   logEntryModel;
@@ -94,17 +95,7 @@ export const StatsChart = ({
         </Text>
       </View>
       {isLoading || !chartState ? (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 88,
-          }}
-        >
-          <ActivityIndicator size="small" color={colors.lightText} />
-        </View>
+        <Loader colors={colors} />
       ) : (
         <BarChart
           data={chartState.chartData}

@@ -16,7 +16,10 @@ export const getLevelProgress = (
 
   return {
     calculatedLevel: level,
-    levelPercent: Math.ceil((currentLevelsResists / expNeeded) * 100),
+    levelPercent: Math.min(
+      Math.ceil((currentLevelsResists / expNeeded) * 100),
+      100,
+    ),
   };
 };
 

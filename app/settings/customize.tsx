@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import FactorsForm from "@/components/FactorsForm";
 import { ScrollView } from "react-native-gesture-handler";

@@ -9,4 +9,6 @@ export type Factors = {
 
 export type Settings = {
   factors: Factors;
+  darkMode?: boolean;
+  isOnboarding: boolean;
 };

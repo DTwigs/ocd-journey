@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { ThemedText } from "../ThemedText";
 
-const MAX_DISPLAY = 15;
+const MAX_DISPLAY = 10;
 
 export function ChartColumn({ count }: { count: number }) {
   const colors = useThemeColors();
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     marginBottom: -4,
     overflow: "visible",
-    width: 18,
+    width: 22,
     textAlign: "center",
   },
 });

@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AppState } from "react-native";
 import type { AppStateStatus } from "react-native";
 import "react-native-reanimated";
@@ -13,27 +13,20 @@ import * as db from "@/db";
 import { useStore } from "@/hooks/useStore";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import ToastWrapper from "./ToastWrapper";
+import { Onboarding } from "./Onboarding";
+import { SET_ONBOARDING } from "@/models/settings/actions";
+import { Loader } from "./Loader";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function Root() {
-  const store = useStore();
+  const { settings, init, dispatch } = useStore();
   const appState = useRef(AppState.currentState);
   const isDarkMode = useDarkMode();
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", onAppStateChange);
-    (async () => {
-      store.init();
-    })();
-
-    return () => {
-      if (subscription) {
-        subscription.remove();
-      }
-    };
-  }, []);
+  const colors = useThemeColors();
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const onAppStateChange = (nextAppState: AppStateStatus) => {
     const backgroundToForeground =
@@ -56,13 +49,44 @@ export default function Root() {
 
         if (shouldSync) {
           // re-populate the store from async storage
-          store.init();
+          init();
         }
       })();
     }
 
     appState.current = nextAppState;
   };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", onAppStateChange);
+    (async () => {
+      await init();
+      setIsReady(true);
+    })();
+
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
+  }, []);
+
+  const onOnboardingDone = () => {
+    dispatch({ type: SET_ONBOARDING, value: false });
+  };
+
+  if (!isReady) {
+    return <Loader colors={colors} />;
+  }
+
+  if (settings.isOnboarding) {
+    return (
+      <>
+        <StatusBar hidden={true} style="light" />
+        <Onboarding onDone={onOnboardingDone} />
+      </>
+    );
+  }
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

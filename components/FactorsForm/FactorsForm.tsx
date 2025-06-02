@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
+import { AnimatedSpringIcon } from "@/components/AnimatedSpringIcon";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { useStore } from "@/hooks/useStore";
@@ -101,9 +101,9 @@ export const FactorsForm = () => {
 
         <View style={styles.submitButtonContainer}>
           <Pressable onPress={onPress}>
-            <MaterialCommunityIcons
+            <AnimatedSpringIcon
               size={96}
-              name="check-circle"
+              icon="check-circle"
               color={colors.text}
             />
           </Pressable>

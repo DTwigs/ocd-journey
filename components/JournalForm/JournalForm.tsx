@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 import { Colors } from "@/constants/Colors";
 import { CustomSlider } from "@/components/CustomSlider";
 import { CustomCheckbox } from "@/components/CustomCheckbox";
+import { AnimatedSpringIcon } from "@/components/AnimatedSpringIcon";
 import {
   MOOD_ICON_MAP,
   BATTERY_ICON_MAP,
@@ -51,12 +51,14 @@ export const JournalForm = () => {
 
   const onPress = () => {
     dispatch({ type: logEntryModel.SAVE_LOG, value: entryStats });
-    Toast.show({
-      type: "pixelToast",
-      text1: isNaN(todaysLog?.mood) ? "Saved!" : "Updated!",
-      position: "bottom",
-    });
-    router.navigate("/(tabs)/stats");
+    setTimeout(() => {
+      Toast.show({
+        type: "pixelToast",
+        text1: isNaN(todaysLog?.mood) ? "Saved!" : "Updated!",
+        position: "bottom",
+      });
+      router.navigate("/(tabs)/stats");
+    }, 100);
   };
 
   return (
@@ -94,9 +96,9 @@ export const JournalForm = () => {
       />
       <View style={styles.submitButtonContainer}>
         <Pressable onPress={onPress}>
-          <MaterialCommunityIcons
+          <AnimatedSpringIcon
             size={96}
-            name="check-circle"
+            icon="check-circle"
             color={colors.text}
           />
         </Pressable>

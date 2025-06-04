@@ -1,10 +1,11 @@
 import { useFonts } from "expo-font";
 import { useAssets } from "expo-asset";
 import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import "react-native-reanimated";
 import { View } from "react-native";
 
+import { initNotifications } from "@/utils/notifications";
 import { StoreProvider } from "@/contexts/StoreContext";
 import Root from "@/components/Root";
 import * as Sentry from "@sentry/react-native";
@@ -28,6 +29,7 @@ const imageAssets = [
   require("../assets/images/onboarding1.png"),
   require("../assets/images/onboarding2.png"),
   require("../assets/images/onboarding3.png"),
+  // require("../assets/images/CatIcon.svg"),
 ];
 
 export default Sentry.wrap(function RootLayout() {
@@ -37,6 +39,10 @@ export default Sentry.wrap(function RootLayout() {
   });
 
   const [assets, assetsError] = useAssets(imageAssets);
+
+  useEffect(() => {
+    initNotifications();
+  }, []);
 
   const isAppReady = !!fonts && !!assets;
 

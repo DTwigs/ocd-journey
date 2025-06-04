@@ -6,6 +6,7 @@ import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { CatIcon } from "@/components/CatIcon";
 
 export default function TabLayout() {
   const colors = useThemeColors();
@@ -61,7 +62,7 @@ export default function TabLayout() {
           title: "OCD JOURNEY",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-              size={28}
+              size={30}
               name="arrow-up-bold-circle"
               color={color}
             />
@@ -73,7 +74,7 @@ export default function TabLayout() {
         options={{
           title: "Journal",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="heart.fill" color={color} />
+            <IconSymbol size={30} name="heart.fill" color={color} />
           ),
         }}
       />
@@ -82,9 +83,7 @@ export default function TabLayout() {
         options={{
           title: "Stats",
           // href: null,
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons size={28} name="cat" color={color} />
-          ),
+          tabBarIcon: ({ color }) => <CatIcon color={color} />,
         }}
       />
     </Tabs>

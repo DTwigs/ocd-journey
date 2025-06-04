@@ -28,7 +28,10 @@ export default function Root() {
             color: colors.text,
           },
           headerLeft: () => (
-            <Pressable onPress={() => router.back()} style={styles.headerLeft}>
+            <Pressable
+              onPress={() => router.dismissTo("/settings")}
+              style={styles.headerLeft}
+            >
               <MaterialCommunityIcons
                 size={28}
                 name="chevron-left"
@@ -44,7 +47,7 @@ export default function Root() {
             title: "SETTINGS",
             headerLeft: () => (
               <Pressable
-                onPress={() => router.back()}
+                onPress={() => router.dismissTo("/")}
                 style={styles.headerLeft}
               >
                 <MaterialCommunityIcons

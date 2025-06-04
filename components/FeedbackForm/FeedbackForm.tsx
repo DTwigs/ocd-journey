@@ -16,6 +16,7 @@ import * as Sentry from "@sentry/react-native";
 import { AnimatedSpringIcon } from "@/components/AnimatedSpringIcon";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { PSEUDO_PAGE_LOAD } from "@/constants/General";
 
 export const FeedbackForm = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ export const FeedbackForm = () => {
       text1: "Submitted! Thank you!",
       position: "bottom",
     });
-    setTimeout(() => router.navigate("/settings"), 300);
+    setTimeout(() => router.navigate("/settings"), PSEUDO_PAGE_LOAD);
   };
 
   return (
@@ -75,6 +76,7 @@ export const FeedbackForm = () => {
             multiline={true}
             returnKeyLabel="done"
             onChangeText={(text) => setFeedback(text)}
+            placeholder="Leave your feedback here..."
           />
           <View style={styles.bugContainer}>
             <ThemedText>🐛 Bug?</ThemedText>

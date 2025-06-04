@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { Dimensions, Image, Text, StyleSheet, Pressable } from "react-native";
+import { Dimensions, Image, StyleSheet } from "react-native";
 import OnboardingSwiper from "react-native-onboarding-swiper";
 import { Colors } from "@/constants/Colors";
 

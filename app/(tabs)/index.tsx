@@ -61,7 +61,6 @@ export default function HomeScreen() {
           Press every time you resist a compulsion!
         </ThemedText>
       </View>
-
       <View style={[styles.chart]}>
         <AnimatedPlusExp
           text="+1 Resist"

@@ -17,11 +17,15 @@ import { Onboarding } from "./Onboarding";
 import { SET_ONBOARDING } from "@/models/settings/actions";
 import { Loader } from "./Loader";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { useNotificationObserver } from "@/hooks/useNotificationObserver";
+import { requestNotificationPermissions } from "@/utils/notifications";
+import { PSEUDO_PAGE_LOAD } from "@/constants/General";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function Root() {
+  useNotificationObserver();
   const { settings, init, dispatch } = useStore();
   const appState = useRef(AppState.currentState);
   const isDarkMode = useDarkMode();
@@ -73,6 +77,7 @@ export default function Root() {
 
   const onOnboardingDone = () => {
     dispatch({ type: SET_ONBOARDING, value: false });
+    setTimeout(() => requestNotificationPermissions(), PSEUDO_PAGE_LOAD);
   };
 
   if (!isReady) {

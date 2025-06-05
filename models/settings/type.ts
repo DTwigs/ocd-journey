@@ -12,3 +12,8 @@ export type Settings = {
   darkMode?: boolean;
   isOnboarding: boolean;
 };
+
+export type ReminderTime = {
+  hours: number; // 24 hour time
+  minutes: number;
+};

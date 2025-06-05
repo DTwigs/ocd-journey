@@ -1,3 +1,4 @@
+import { ReminderTime } from "@/models/settings/type";
 import * as Notifications from "expo-notifications";
 
 export const initNotifications = async () => {
@@ -32,7 +33,7 @@ export const initNotifications = async () => {
 
 const checkNotificationsAreGranted = (
   settings: Notifications.NotificationPermissionsStatus,
-) => {
+): boolean => {
   const granted =
     settings.granted ||
     (settings.ios &&
@@ -43,10 +44,17 @@ const checkNotificationsAreGranted = (
     console.log("🔒 Notifications Granted?", granted);
   }
 
-  return granted;
+  return granted ?? false;
 };
 
-export const requestNotificationPermissions = async () => {
+export const getNotificationsGrantedValue = async () => {
+  const settings = await Notifications.getPermissionsAsync();
+  return checkNotificationsAreGranted(settings);
+};
+
+export const requestNotificationPermissions = async (
+  time?: ReminderTime,
+): Promise<boolean> => {
   const status = await Notifications.requestPermissionsAsync({
     ios: {
       allowAlert: true,
@@ -58,23 +66,36 @@ export const requestNotificationPermissions = async () => {
   const granted = checkNotificationsAreGranted(status);
 
   if (!granted) {
-    return;
+    await cancelAllNotifications();
+    return false;
   }
 
-  const scheduledNotis =
-    await Notifications.getAllScheduledNotificationsAsync();
-  if (scheduledNotis.length > 0) {
-    return;
-  }
+  // const scheduledNotis =
+  //   await Notifications.getAllScheduledNotificationsAsync();
+  // if (scheduledNotis.length > 0) {
+  //   return;
+  // }
 
+  await scheduleDailyLogNotifications(time);
+
+  return true;
+};
+
+export const cancelAllNotifications = async () => {
+  await Notifications.cancelAllScheduledNotificationsAsync();
+};
+
+export const scheduleDailyLogNotifications = async (time?: ReminderTime) => {
+  await cancelAllNotifications();
   Notifications.scheduleNotificationAsync({
     content: {
       title: "Daily Journal Time!",
+      data: { url: "/(tabs)/journal" },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
-      hour: 20,
-      minute: 0,
+      hour: time?.hours ?? 20,
+      minute: time?.minutes ?? 0,
     },
   });
 };

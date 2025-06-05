@@ -20,9 +20,7 @@ import { PSEUDO_PAGE_LOAD } from "@/constants/General";
 
 export const FeedbackForm = () => {
   const router = useRouter();
-  // const { settings, dispatch } = useStore();
   const colors = useThemeColors();
-  // const { factors } = settings;
 
   const [feedback, setFeedback] = useState<string>("");
   const [isBug, setBug] = useState<boolean>(false);
@@ -85,7 +83,6 @@ export const FeedbackForm = () => {
                 false: colors.text,
                 true: colors.tertiary,
               }}
-              // style={styles.toggle}
               thumbColor={isBug ? colors.background : colors.backgroundTint}
               ios_backgroundColor={colors.text}
               onValueChange={(value: boolean) => {

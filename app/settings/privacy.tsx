@@ -14,10 +14,10 @@ import { ThemedView } from "@/components/ThemedView";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
+import { cancelAllNotifications } from "@/utils/notifications";
 
 export default function Privacy() {
   const router = useRouter();
-  // useTrackScreenView("PrivacyScreen");
   const store = useStore();
   const colors = useThemeColors();
 

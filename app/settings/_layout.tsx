@@ -66,6 +66,12 @@ export default function Root() {
           }}
         />
         <Stack.Screen
+          name="notifications"
+          options={{
+            title: "Notifications",
+          }}
+        />
+        <Stack.Screen
           name="customize"
           options={{
             title: "CUSTOMIZE",

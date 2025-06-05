@@ -6,3 +6,5 @@ export const INTERVALS = {
   QUARTER: 90,
   ALL: 0,
 };
+
+export const DISPLAY_TIME_FORMAT = "hh:mm aa";

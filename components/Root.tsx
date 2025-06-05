@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -14,18 +13,17 @@ import { useStore } from "@/hooks/useStore";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import ToastWrapper from "./ToastWrapper";
 import { Onboarding } from "./Onboarding";
-import { SET_ONBOARDING } from "@/models/settings/actions";
+import { SET_NOTIFICATIONS, SET_ONBOARDING } from "@/models/settings/actions";
 import { Loader } from "./Loader";
 import { useThemeColors } from "@/hooks/useThemeColors";
-import { useNotificationObserver } from "@/hooks/useNotificationObserver";
 import { requestNotificationPermissions } from "@/utils/notifications";
 import { PSEUDO_PAGE_LOAD } from "@/constants/General";
+import RootNavigation from "./RootNavigation";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function Root() {
-  useNotificationObserver();
   const { settings, init, dispatch } = useStore();
   const appState = useRef(AppState.currentState);
   const isDarkMode = useDarkMode();
@@ -77,7 +75,12 @@ export default function Root() {
 
   const onOnboardingDone = () => {
     dispatch({ type: SET_ONBOARDING, value: false });
-    setTimeout(() => requestNotificationPermissions(), PSEUDO_PAGE_LOAD);
+    setTimeout(() => requestAndSaveNotifications(), PSEUDO_PAGE_LOAD);
+  };
+
+  const requestAndSaveNotifications = async () => {
+    const granted = await requestNotificationPermissions();
+    dispatch({ type: SET_NOTIFICATIONS, value: granted });
   };
 
   if (!isReady) {
@@ -96,16 +99,7 @@ export default function Root() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <GestureHandlerRootView>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="settings"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+        <RootNavigation />
         <StatusBar style={isDarkMode ? "light" : "dark"} />
         <ToastWrapper />
       </GestureHandlerRootView>

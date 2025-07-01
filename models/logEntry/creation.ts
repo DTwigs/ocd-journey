@@ -8,6 +8,7 @@ export const makeStats = (statsOverrides: LogEntryStats): LogEntryStats => {
     anxiety: null,
     factor1: false,
     factor2: false,
+    notes: null,
     ...statsOverrides,
   };
 };

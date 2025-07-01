@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useMemo } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import ResistChart from "@/components/ResistChart";
 import { useThemeColors } from "@/hooks/useThemeColors";
@@ -16,8 +16,7 @@ export default function HomeScreen() {
   const colors = useThemeColors();
   const animatedPlusExpRef = useRef<{ animate: () => void }>();
   const animatedLevelUpRef = useRef<{ animate: () => void }>();
-  const [experiencePct, setExperiencePct] = useState<number>(0);
-  const loadCount = useRef(0);
+  const firstLoad = useRef(true);
 
   const handlePress = useCallback(() => {
     dispatch({ type: logEntryModel.ADD_RESIST });
@@ -25,16 +24,15 @@ export default function HomeScreen() {
     animatedPlusExpRef.current?.animate();
   }, [dispatch]);
 
+  const { calculatedLevel, levelPercent } = useMemo(
+    () => getLevelProgress(character.level, character.totalResists),
+    [character.totalResists, character.level],
+  );
+
   useEffect(() => {
-    const { calculatedLevel, levelPercent } = getLevelProgress(
-      character.level,
-      character.totalResists,
-    );
-
-    setExperiencePct(levelPercent);
-
-    if (loadCount.current === 0 || loadCount.current === 1) {
-      loadCount.current += 1;
+    // First render we do not want to show the level up animation.
+    if (firstLoad.current) {
+      firstLoad.current = false;
       return;
     }
 
@@ -44,7 +42,7 @@ export default function HomeScreen() {
         animatedLevelUpRef.current?.animate();
       }, 300);
     }
-  }, [character.totalResists, character.level]);
+  }, [calculatedLevel, character.level]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -75,7 +73,7 @@ export default function HomeScreen() {
           ref={animatedLevelUpRef}
         />
         <ResistChart />
-        <ExperienceBar percent={experiencePct} level={character.level} />
+        <ExperienceBar percent={levelPercent} level={character.level} />
       </View>
     </View>
   );

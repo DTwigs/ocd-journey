@@ -11,8 +11,13 @@ export type LogEntryFactors = {
   factor2?: boolean | undefined;
 };
 
+export type LogEntryNotes = {
+  notes?: string | null;
+};
+
 export type LogEntryStats = LogEntryJournalStats &
-  LogEntryFactors & { resists?: number | null };
+  LogEntryFactors &
+  LogEntryNotes & { resists?: number | null };
 
 export type LogEntries = Map<string, LogEntryStats>;
 

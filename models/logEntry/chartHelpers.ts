@@ -31,22 +31,19 @@ type GetChartDataRangeReturnType = {
 export const getChartDataRange = (
   entries: LogEntries,
   statName: LogEntryStatName,
-  numberOfRecords: number = INTERVALS.WEEK,
+  interval: number = INTERVALS.WEEK,
   startDate: string = formatDateKey(new Date()),
   factorNumToShow: number = 0, // define which factor to show colors for on the chart
 ): GetChartDataRangeReturnType => {
-  let endIndex = entries.size;
   const startIndex = differenceInDays(
     parseISO(formatDateKey(new Date())),
     parseISO(startDate),
   );
-  if (numberOfRecords > 0) {
-    endIndex = startIndex + numberOfRecords - 1;
-  }
+  const endIndex = startIndex - interval + 1;
 
   const lineData = [];
   const chartData = [];
-  for (let i = endIndex; i >= startIndex; i--) {
+  for (let i = startIndex; i >= endIndex; i--) {
     const dateKey = formatDateKey(subDays(new Date(), i));
     const entry = entries.get(dateKey);
     const value = entry?.[statName] ?? 0;
@@ -60,7 +57,7 @@ export const getChartDataRange = (
     lineData.push({ value, dateKey });
 
     chartData.push({
-      label: CHART_PROPS_BY_INTERVAL[numberOfRecords].format(dateKey),
+      label: CHART_PROPS_BY_INTERVAL[interval].format(dateKey),
       value,
       frontColor,
       factor2: entry?.factor2,
@@ -69,7 +66,7 @@ export const getChartDataRange = (
       barBorderTopRightRadius: BORDER_RADIUS,
       barBorderBottomLeftRadius: 0,
       barBorderBottomRightRadius: 0,
-      labelWidth: CHART_PROPS_BY_INTERVAL[numberOfRecords].labelWidth,
+      labelWidth: CHART_PROPS_BY_INTERVAL[interval].labelWidth,
     });
   }
 

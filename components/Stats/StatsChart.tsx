@@ -15,7 +15,7 @@ import type {
 } from "@/models/logEntry/type";
 import { Loader } from "../Loader";
 import { formatDateKey } from "@/models/logEntry/selectors";
-// import { parseISO, subDays } from "date-fns";
+import { subDays } from "date-fns";
 
 const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
   logEntryModel;
@@ -23,6 +23,7 @@ const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
 type IntervalKeys = keyof typeof INTERVALS;
 
 type StatsChartProps = {
+  startDate?: string;
   entries: LogEntries;
   stat: LogEntryStatName;
   interval: (typeof INTERVALS)[IntervalKeys];
@@ -38,6 +39,7 @@ type ChartState = {
 } | null;
 
 export const StatsChart = ({
+  startDate,
   entries,
   stat,
   interval,
@@ -71,7 +73,7 @@ export const StatsChart = ({
       entries,
       stat,
       interval,
-      formatDateKey(new Date()), //subDays(parseISO("2025-05-09"), interval), // start from today
+      startDate ?? formatDateKey(subDays(new Date(), interval - 1)), //formatDateKey(new Date()), , // start from today
       selectedFactor,
     );
     setChartState({ chartData, lineData });

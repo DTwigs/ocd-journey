@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import {
   MOOD_ICON_MAP,
@@ -13,7 +13,6 @@ import { StatsChart } from "./StatsChart";
 import { StatsLegend } from "./StatsLegend";
 import { GroupButton } from "@/components/GroupButton";
 import { LogEntryStatName } from "@/models/logEntry/type";
-import { useRouter } from "expo-router";
 
 type StatButton = {
   icon: any;
@@ -21,8 +20,11 @@ type StatButton = {
   value: LogEntryStatName;
 };
 
-export const StatsContainer = () => {
-  const router = useRouter();
+type StatsContainerProps = {
+  startDate?: string;
+};
+
+export const StatsContainer = ({ startDate }: StatsContainerProps) => {
   const [selectedInterval, setSelectedInterval] = useState<number>(
     INTERVALS.WEEK,
   );
@@ -96,6 +98,7 @@ export const StatsContainer = () => {
 
       {statButtons.map(({ icon, label, value }, index) => (
         <StatsChart
+          startDate={startDate}
           entries={logEntries}
           stat={value}
           icon={icon}
@@ -114,9 +117,6 @@ export const StatsContainer = () => {
           selectedFactor={selectedFactor}
         />
       </View>
-      <Pressable onPress={() => router.navigate("/(tabs)/stats/notes")}>
-        <Text>Notes {">"}</Text>
-      </Pressable>
     </View>
   );
 };
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    height: 100,
+    height: 500,
   },
   buttonGroupContainer: {
     paddingTop: 40,

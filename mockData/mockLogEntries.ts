@@ -37,12 +37,33 @@ for (let i = 100; i > 0; i--) {
       ),
       factor1: Math.random() < 0.5,
       factor2: hasTravel,
-      notes:
-        Math.random() > 0.7
-          ? `Notes from ${formatDateKey(subDays(new Date(), i))} and extra text to make it wrap multiple lines`
-          : undefined,
+      notes: Math.random() > 0.7 ? generateRandomSentence() : undefined,
     }),
   );
+}
+
+function generateRandomSentence() {
+  let subjects = [
+    "The cat",
+    "A dear friend",
+    "The mage",
+    "Our team",
+    "A crab the size of a car",
+  ];
+  let verbs = ["completed", "created", "drew", "heard", "summoned"];
+  let objects = [
+    "the task",
+    "a bug",
+    "the module",
+    "a unicorn",
+    "the fourth tree from the left",
+  ];
+
+  let subject = subjects[Math.floor(Math.random() * subjects.length)];
+  let verb = verbs[Math.floor(Math.random() * verbs.length)];
+  let object = objects[Math.floor(Math.random() * objects.length)];
+
+  return `${subject} ${verb} ${object}.`;
 }
 
 export const mockLogEntries = mockData;

@@ -27,6 +27,18 @@ export default function Root() {
           headerStyle: {
             backgroundColor: colors.background,
           },
+          headerRight: () => (
+            <Pressable
+              onPress={() => router.navigate("/settings")}
+              style={styles.headerRight}
+            >
+              <MaterialCommunityIcons
+                size={28}
+                name="cog"
+                color={colors.text}
+              />
+            </Pressable>
+          ),
         }}
       >
         <Stack.Screen
@@ -79,6 +91,9 @@ export default function Root() {
 
 const styles = StyleSheet.create({
   headerLeft: {
+    marginRight: 25,
+  },
+  headerRight: {
     marginRight: 25,
   },
 });

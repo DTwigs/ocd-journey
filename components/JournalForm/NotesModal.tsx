@@ -28,9 +28,8 @@ export const NotesModal = ({
       presentationStyle="formSheet"
       onRequestClose={onCancel}
       statusBarTranslucent={true}
-      style={{ flex: 0, height: 400 }}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <ThemedText style={styles.sectionHeading}>Add Notes</ThemedText>
         <TextInput
           style={[
@@ -73,9 +72,10 @@ export const NotesModal = ({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingTop: 32,
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     height: 400,
     width: "100%",
@@ -94,9 +94,6 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   submitButtonContainer: {
-    // marginTop: 36,
-    // width: "100%",
-    // flex: 1,
     marginTop: 50,
     flexDirection: "row",
     justifyContent: "space-around",

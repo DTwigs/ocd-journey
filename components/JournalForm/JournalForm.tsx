@@ -118,7 +118,7 @@ export const JournalForm = () => {
         >
           <MaterialCommunityIcons
             size={22}
-            name={entryStats.notes ? "square-edit-outline" : "plus"}
+            name={entryStats.notes ? "note-edit-outline" : "note-plus-outline"}
             color={colors.text}
           />
           <ThemedText style={{ fontSize: 12 }}>Notes</ThemedText>

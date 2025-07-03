@@ -42,13 +42,13 @@ export default function TabLayout() {
           ios: {
             // Use a transparent background on iOS to show the blur effect
             position: "absolute",
-            backgroundColor: "transparent", //Colors[colorScheme ?? "light"].background,
+            backgroundColor: colors.background,
             elevation: 0,
             shadowOpacity: 0,
             borderTopWidth: 0,
           },
           default: {
-            backgroundColor: "transparent", //Colors[colorScheme ?? "light"].background,
+            backgroundColor: colors.background,
             elevation: 0,
             shadowOpacity: 0,
             borderTopWidth: 0,
@@ -84,6 +84,7 @@ export default function TabLayout() {
           title: "Stats",
           // href: null,
           tabBarIcon: ({ color }) => <CatIcon color={color} />,
+          headerShown: false,
         }}
       />
     </Tabs>

@@ -30,8 +30,6 @@ export const NotificationsForm = () => {
   const isDarkMode = useDarkMode();
   const [allowNotifications, setAllowNotifications] = useState<boolean>(false);
 
-  console.log({ reminderTime: settings.reminderTime });
-
   const checkNotifications = async () => {
     const granted = await getNotificationsGrantedValue();
     setAllowNotifications(granted && settings.allowNotifications);
@@ -54,15 +52,6 @@ export const NotificationsForm = () => {
       await cancelAllNotifications();
     }
   };
-
-  // const submitFeedback = () => {
-  //   Toast.show({
-  //     type: "pixelToast",
-  //     text1: "Submitted! Thank you!",
-  //     position: "bottom",
-  //   });
-  //   setTimeout(() => router.navigate("/settings"), PSEUDO_PAGE_LOAD);
-  // };
 
   const onTimeChange = (date?: Date) => {
     const hours = date?.getHours() ?? settings.reminderTime.hours;

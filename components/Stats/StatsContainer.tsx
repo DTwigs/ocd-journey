@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useThemeColors } from "@/hooks/useThemeColors";
 import {
   MOOD_ICON_MAP,
@@ -13,6 +13,7 @@ import { StatsChart } from "./StatsChart";
 import { StatsLegend } from "./StatsLegend";
 import { GroupButton } from "@/components/GroupButton";
 import { LogEntryStatName } from "@/models/logEntry/type";
+import { useRouter } from "expo-router";
 
 type StatButton = {
   icon: any;
@@ -21,6 +22,7 @@ type StatButton = {
 };
 
 export const StatsContainer = () => {
+  const router = useRouter();
   const [selectedInterval, setSelectedInterval] = useState<number>(
     INTERVALS.WEEK,
   );
@@ -112,6 +114,9 @@ export const StatsContainer = () => {
           selectedFactor={selectedFactor}
         />
       </View>
+      <Pressable onPress={() => router.navigate("/(tabs)/stats/notes")}>
+        <Text>Notes {">"}</Text>
+      </Pressable>
     </View>
   );
 };

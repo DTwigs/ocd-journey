@@ -1,4 +1,4 @@
-import { subDays } from "date-fns";
+import { differenceInDays, parseISO, subDays } from "date-fns";
 import type { ColorValue } from "react-native";
 import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
@@ -32,10 +32,14 @@ export const getChartDataRange = (
   entries: LogEntries,
   statName: LogEntryStatName,
   numberOfRecords: number = INTERVALS.WEEK,
-  startIndex: number = 0,
+  startDate: string = formatDateKey(new Date()),
   factorNumToShow: number = 0, // define which factor to show colors for on the chart
 ): GetChartDataRangeReturnType => {
   let endIndex = entries.size;
+  const startIndex = differenceInDays(
+    parseISO(formatDateKey(new Date())),
+    parseISO(startDate),
+  );
   if (numberOfRecords > 0) {
     endIndex = startIndex + numberOfRecords - 1;
   }

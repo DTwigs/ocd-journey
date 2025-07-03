@@ -37,6 +37,10 @@ for (let i = 100; i > 0; i--) {
       ),
       factor1: Math.random() < 0.5,
       factor2: hasTravel,
+      notes:
+        Math.random() > 0.7
+          ? `Notes from ${formatDateKey(subDays(new Date(), i))} and extra text to make it wrap multiple lines`
+          : undefined,
     }),
   );
 }

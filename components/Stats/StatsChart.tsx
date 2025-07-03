@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BarChart } from "react-native-gifted-charts";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { INTERVALS } from "@/constants/Dates";
@@ -14,6 +14,8 @@ import type {
   LineDatum,
 } from "@/models/logEntry/type";
 import { Loader } from "../Loader";
+import { formatDateKey } from "@/models/logEntry/selectors";
+// import { parseISO, subDays } from "date-fns";
 
 const { asyncGetChartDataRange, updateChartDataWithFactorColor } =
   logEntryModel;
@@ -62,13 +64,14 @@ export const StatsChart = ({
     }
   }, [selectedFactor]);
 
+  // async to provide loading indicators on slow phones.
   const init = async () => {
     setIsLoading(true);
     const { chartData, lineData } = await asyncGetChartDataRange(
       entries,
       stat,
       interval,
-      0,
+      formatDateKey(new Date()), //subDays(parseISO("2025-05-09"), interval), // start from today
       selectedFactor,
     );
     setChartState({ chartData, lineData });

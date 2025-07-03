@@ -53,14 +53,14 @@ export const NotesModal = ({
         <View style={styles.submitButtonContainer}>
           <Pressable onPress={onCancel}>
             <AnimatedSpringIcon
-              size={96}
+              size={72}
               icon="close-circle-outline"
               color={colors.text}
             />
           </Pressable>
           <Pressable onPress={onSave}>
             <AnimatedSpringIcon
-              size={96}
+              size={72}
               icon="check-circle"
               color={colors.text}
             />

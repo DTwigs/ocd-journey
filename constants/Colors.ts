@@ -3,7 +3,7 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-export const primary = "#EE8E44";
+export const primary = "#17A398";
 export const secondary = "#EB5C68";
 export const tertiary = "#448FDA";
 

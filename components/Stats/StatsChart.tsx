@@ -51,6 +51,7 @@ export const StatsChart = ({
   const colors = useThemeColors();
   const [chartState, setChartState] = useState<ChartState>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isNotesView = !!startDate;
 
   useEffect(() => {
     init();
@@ -61,6 +62,7 @@ export const StatsChart = ({
       const newChartData = updateChartDataWithFactorColor(
         chartState.chartData,
         selectedFactor,
+        isNotesView,
       );
       setChartState({ ...chartState, chartData: newChartData });
     }
@@ -75,6 +77,7 @@ export const StatsChart = ({
       interval,
       startDate ?? formatDateKey(subDays(new Date(), interval - 1)), //formatDateKey(new Date()), , // start from today
       selectedFactor,
+      isNotesView,
     );
     setChartState({ chartData, lineData });
     setIsLoading(false);

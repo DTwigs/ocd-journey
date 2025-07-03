@@ -33,7 +33,7 @@ export default function Root() {
           name="index"
           options={{
             title: "STATS",
-            headerLeft: undefined,
+            headerLeft: () => <></>,
           }}
         />
         <Stack.Screen

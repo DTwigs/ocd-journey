@@ -85,6 +85,7 @@ export default function TabLayout() {
           // href: null,
           tabBarIcon: ({ color }) => <CatIcon color={color} />,
           headerShown: false,
+          popToTopOnBlur: true,
         }}
       />
     </Tabs>

@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 
-import { NotesList } from "@/components/NotesList";
+import { NotesList } from "@/components/NotesList/NotesList";
 import { useStore } from "@/hooks/useStore";
 import { useThemeColors } from "@/hooks/useThemeColors";
 

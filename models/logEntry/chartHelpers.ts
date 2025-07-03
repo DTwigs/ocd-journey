@@ -2,7 +2,7 @@ import { differenceInDays, parseISO, subDays } from "date-fns";
 import type { ColorValue } from "react-native";
 import { formatDateKey } from "./selectors";
 import { INTERVALS } from "@/constants/Dates";
-import { tertiary, secondary } from "@/constants/Colors";
+import { primary, tertiary, secondary } from "@/constants/Colors";
 import { CHART_PROPS_BY_INTERVAL } from "@/constants/Chart";
 import type {
   ChartDatum,
@@ -34,6 +34,7 @@ export const getChartDataRange = (
   interval: number = INTERVALS.WEEK,
   startDate: string = formatDateKey(new Date()),
   factorNumToShow: number = 0, // define which factor to show colors for on the chart
+  isNotesView: boolean = false,
 ): GetChartDataRangeReturnType => {
   const startIndex = differenceInDays(
     parseISO(formatDateKey(new Date())),
@@ -56,10 +57,12 @@ export const getChartDataRange = (
 
     lineData.push({ value, dateKey });
 
+    const highlightNote = isNotesView && i === startIndex;
+
     chartData.push({
       label: CHART_PROPS_BY_INTERVAL[interval].format(dateKey),
       value,
-      frontColor,
+      frontColor: highlightNote ? primary : frontColor,
       factor2: entry?.factor2,
       factor1: entry?.factor1,
       barBorderTopLeftRadius: BORDER_RADIUS,
@@ -109,14 +112,18 @@ export const calculateMovingAverage = (arr: LineDatum[]): LineDatum[] => {
 export const updateChartDataWithFactorColor = (
   chartData: ChartDatum[],
   factorNumToShow: number,
+  isNotesView: boolean,
 ): ChartDatum[] => {
-  return chartData.map((datum: ChartDatum) => {
-    let frontColor;
+  return chartData.map((datum: ChartDatum, i) => {
+    let frontColor: ColorValue | undefined =
+      isNotesView && i === 0 ? primary : undefined;
+
     if (factorNumToShow > 0) {
       const { color } = FACTOR_MAP[factorNumToShow];
       const value = [null, datum.factor1, datum.factor2][factorNumToShow];
-      frontColor = value ? color : undefined;
+      frontColor = value ? color : frontColor;
     }
+
     return {
       ...datum,
       frontColor,

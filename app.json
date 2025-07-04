@@ -2,7 +2,7 @@
   "expo": {
     "name": "OCD Journey",
     "slug": "ocd-tracker",
-    "version": "0.1.0",
+    "version": "1.0.1",
     "updates": {
       "enabled": true,
       "fallbackToCacheTimeout": 0
@@ -20,7 +20,7 @@
     "description": "Track your OCD journey by recording a daily journal and leveling up your ability to resist compulsions.",
     "ios": {
       "bundleIdentifier": "com.twigs.ocdtracker",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "supportsTablet": false,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false

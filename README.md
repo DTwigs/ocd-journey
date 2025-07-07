@@ -2,6 +2,16 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+<img width="610" alt="Screenshot 2025-05-30 at 8 40 47 AM" src="https://github.com/user-attachments/assets/b4cd3116-9d2c-40b7-9a9f-abcbb047ee07" />  
+<br />
+  
+<img src="https://github.com/user-attachments/assets/af14267a-aaec-4731-8a1e-d5744e587794" width="200">
+<img src="https://github.com/user-attachments/assets/92ca76e7-0a95-4298-ae88-029d94f3f72d" width="200">
+<img src="https://github.com/user-attachments/assets/0a110659-056a-4bd1-acf5-f3f8c7f01dbc" width="200">
+
+
+
+
 ## Get started
 
 1. Install dependencies

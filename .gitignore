@@ -40,3 +40,4 @@ app-example
 .env.local
 
 android/sentry.properties
+ios/sentry.properties

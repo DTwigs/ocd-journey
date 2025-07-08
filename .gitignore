@@ -41,3 +41,6 @@ app-example
 
 android/sentry.properties
 ios/sentry.properties
+
+.env.local
+.env.sentry-build-plugin

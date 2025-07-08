@@ -5,7 +5,8 @@
     "version": "1.0.2",
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/8c1aa15b-ade6-4978-a2f2-ac336685123d"
     },
     "orientation": "portrait",
     "icon": "./assets/images/ios-light.png",
@@ -20,7 +21,7 @@
     "description": "Track your OCD journey by recording a daily journal and leveling up your ability to resist compulsions.",
     "ios": {
       "bundleIdentifier": "com.twigs.ocdtracker",
-      "supportsTablet": false,
+      "supportsTablet": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -71,6 +72,7 @@
       "eas": {
         "projectId": "8c1aa15b-ade6-4978-a2f2-ac336685123d"
       }
-    }
+    },
+    "runtimeVersion": "1.0.0"
   }
 }

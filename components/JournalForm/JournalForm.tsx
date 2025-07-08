@@ -105,6 +105,7 @@ export const JournalForm = () => {
         setValue={setStat("factor2")}
       />
       <View style={styles.submitButtonContainer}>
+        <View style={{ flex: 1 }}></View>
         <Pressable onPress={onPress} style={styles.submitButton}>
           <AnimatedSpringIcon
             size={96}
@@ -154,15 +155,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   submitButton: {
-    flex: 2,
-    // justifyContent: "flex-end",
-    alignItems: "flex-end",
-    // backgroundColor: "red",
+    flex: 1,
+    alignItems: "center",
   },
   addNotes: {
     flexDirection: "column",
     flex: 1,
     alignItems: "center",
-    // backgroundColor: "blue",
   },
 });

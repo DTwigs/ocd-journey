@@ -29,7 +29,6 @@ const imageAssets = [
   require("../assets/images/onboarding1.png"),
   require("../assets/images/onboarding2.png"),
   require("../assets/images/onboarding3.png"),
-  // require("../assets/images/CatIcon.svg"),
 ];
 
 export default Sentry.wrap(function RootLayout() {

@@ -1,5 +1,6 @@
 import { Dimensions, Image, StyleSheet } from "react-native";
 import OnboardingSwiper from "react-native-onboarding-swiper";
+// import DeviceInfo from "react-native-device-info";
 import { Colors } from "@/constants/Colors";
 
 const ONBOARDING_COLORS = {
@@ -71,8 +72,8 @@ const styles = StyleSheet.create({
   },
   onboardingImage: {
     // height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width, //DeviceInfo.isTablet() ? "70%" :
     height: "100%",
-    // width: "100%",
+    // width: "70%",
   },
 });

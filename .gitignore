@@ -39,7 +39,5 @@ app-example
 
 .env.local
 
-ios/sentry.properties
-
 .env.local
 .env.sentry-build-plugin

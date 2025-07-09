@@ -2,7 +2,7 @@
   "expo": {
     "name": "OCD Journey",
     "slug": "ocd-tracker",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "updates": {
       "enabled": true,
       "fallbackToCacheTimeout": 0,
